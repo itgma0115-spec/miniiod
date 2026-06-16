@@ -2479,12 +2479,30 @@ window.addEventListener("beforeinstallprompt", (event) => {
   $("#installBtn").hidden = false;
 });
 
-$("#installBtn").addEventListener("click", async () => {
+async function requestAndroidInstall() {
   if (!deferredInstallPrompt) return;
   deferredInstallPrompt.prompt();
   await deferredInstallPrompt.userChoice.catch(() => null);
   deferredInstallPrompt = null;
   $("#installBtn").hidden = true;
+}
+
+$("#installBtn").addEventListener("click", requestAndroidInstall);
+
+$("#androidInstallBtn").addEventListener("click", async () => {
+  if (deferredInstallPrompt) {
+    await requestAndroidInstall();
+    return;
+  }
+  $("#iosInstallTip").hidden = false;
+  $("#iosInstallTip strong").textContent = "Android дээр суулгах";
+  $("#iosInstallTip p").textContent = "Chrome дээр энэ link-ийг нээгээд browser menu-ээс Install app эсвэл Add to Home screen сонгоорой.";
+});
+
+$("#iosInstallBtn").addEventListener("click", () => {
+  $("#iosInstallTip").hidden = false;
+  $("#iosInstallTip strong").textContent = "iPhone/iPad дээр суулгах";
+  $("#iosInstallTip p").textContent = "Safari дээр энэ link-ийг нээгээд Share товч дарж, Add to Home Screen сонгоорой.";
 });
 
 function updateIosInstallTip() {
