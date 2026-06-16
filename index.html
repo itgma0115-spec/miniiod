@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="mn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f8d66d" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Миний Од" />
+    <title>Миний Од</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" aria-label="Миний Од хүүхдийн сургалтын апп">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">2-3 нас</p>
+          <h1>Миний Од</h1>
+        </div>
+        <div class="lang-switch" aria-label="Хэл сонгох">
+          <button class="lang-btn active" data-lang="mn" type="button">MN</button>
+          <button class="lang-btn" data-lang="en" type="button">EN</button>
+        </div>
+      </header>
+
+      <section class="hero-card" aria-live="polite">
+        <div>
+          <p id="heroKicker">Өнөөдөр сурсан</p>
+          <strong id="progressText">0 үг</strong>
+        </div>
+        <div class="hero-actions">
+          <button id="installBtn" class="install-btn" type="button" hidden>Татах</button>
+          <button id="celebrateBtn" class="round-action" type="button" aria-label="Баяр хүргэх дуу тоглуулах">♪</button>
+        </div>
+      </section>
+
+      <section id="iosInstallTip" class="install-tip" hidden>
+        <strong>iPhone/iPad дээр суулгах</strong>
+        <p>Safari дээр Share товч дарж, Add to Home Screen сонгоорой.</p>
+      </section>
+
+      <section id="screen-words" class="screen active" data-screen="words">
+        <div class="section-head">
+          <h2>Үг сурах</h2>
+          <p>Жимс, амьтад дээр дарж сонсоорой.</p>
+        </div>
+        <div id="categoryTabs" class="pill-row" aria-label="Үгийн ангилал"></div>
+        <div id="wordGrid" class="card-grid"></div>
+      </section>
+
+      <section id="screen-songs" class="screen" data-screen="songs">
+        <div class="section-head">
+          <h2>Дуу сурах</h2>
+          <p>Зохиогчийн эрхгүй, уламжлалт аяны demo.</p>
+        </div>
+        <div id="songList" class="song-list"></div>
+      </section>
+
+      <section id="screen-games" class="screen" data-screen="games">
+        <div class="section-head">
+          <h2>Тоглоом</h2>
+          <p>Дууг сонсоод зөв зургийг дар.</p>
+        </div>
+        <div class="game-panel">
+          <button id="playPrompt" class="primary-btn" type="button">Дуу сонсох</button>
+          <p id="gamePrompt">Эхлэхэд бэлэн.</p>
+          <div id="gameChoices" class="choice-grid"></div>
+        </div>
+      </section>
+
+      <section id="screen-alphabet" class="screen" data-screen="alphabet">
+        <div class="section-head">
+          <h2>Цагаан толгой</h2>
+          <p>Үсэг дарахад 3 жишээ ээлжээр дуугарна.</p>
+        </div>
+        <div class="alphabet-mode" aria-label="Цагаан толгойн хэл">
+          <button class="alpha-mode active" data-alpha="mn" type="button">Монгол</button>
+          <button class="alpha-mode" data-alpha="en" type="button">English</button>
+        </div>
+        <div id="alphabetGrid" class="alphabet-grid"></div>
+        <article id="letterDetail" class="letter-detail">
+          <div>
+            <span id="bigLetter">А</span>
+            <h3 id="letterWord">Алим</h3>
+            <p id="letterHint">Үсэг сонгоорой.</p>
+          </div>
+          <img id="letterImage" alt="" />
+        </article>
+      </section>
+
+      <footer class="asset-credit">
+        <a href="https://icons8.com" target="_blank" rel="noopener">Icons by Icons8</a>
+      </footer>
+
+      <nav class="bottom-nav" aria-label="Гол цэс">
+        <button class="nav-btn active" data-target="words" type="button"><span>●</span>Үг</button>
+        <button class="nav-btn" data-target="songs" type="button"><span>♪</span>Дуу</button>
+        <button class="nav-btn" data-target="games" type="button"><span>◆</span>Тоглоом</button>
+        <button class="nav-btn" data-target="alphabet" type="button"><span>A</span>Үсэг</button>
+      </nav>
+    </main>
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator && location.protocol !== "file:") {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
