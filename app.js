@@ -9,70 +9,1879 @@ const state = {
 };
 
 const categories = [
-  { id: "fruits", mn: "Жимс", en: "Fruits" },
-  { id: "animals", mn: "Амьтад", en: "Animals" },
-  { id: "cars", mn: "Машин", en: "Vehicles" },
-  { id: "countries", mn: "Улс орнууд", en: "Countries" },
-  { id: "numbers", mn: "Тоо", en: "Numbers" },
+  {
+    id: "animals",
+    mn: "Амьтад",
+    en: "Animals"
+  },
+  {
+    id: "fruits",
+    mn: "Жимс",
+    en: "Fruits"
+  },
+  {
+    id: "vehicles",
+    mn: "Машин",
+    en: "Vehicles"
+  },
+  {
+    id: "countries",
+    mn: "Улс орнууд",
+    en: "Countries"
+  },
+  {
+    id: "numbers",
+    mn: "Тоо",
+    en: "Numbers"
+  },
+  {
+    id: "colors",
+    mn: "Өнгө",
+    en: "Colors"
+  },
+  {
+    id: "shapes",
+    mn: "Дүрс",
+    en: "Shapes"
+  },
+  {
+    id: "body",
+    mn: "Биеийн хэсэг",
+    en: "Body Parts"
+  },
+  {
+    id: "food",
+    mn: "Хоол",
+    en: "Food"
+  },
+  {
+    id: "family",
+    mn: "Гэр бүл",
+    en: "Family"
+  }
 ];
 
 const words = {
-  fruits: [
-    ["Алим", "Apple", "apple fruit"], ["Банана", "Banana", "banana fruit"], ["Жүрж", "Orange", "orange fruit"],
-    ["Усан үзэм", "Grape", "grapes fruit"], ["Гүзээлзгэнэ", "Strawberry", "strawberry fruit"], ["Тарвас", "Watermelon", "watermelon fruit"],
-    ["Лийр", "Pear", "pear fruit"], ["Тоор", "Peach", "peach fruit"], ["Интоор", "Cherry", "cherry fruit"],
-    ["Ананас", "Pineapple", "pineapple fruit"], ["Манго", "Mango", "mango fruit"], ["Киви", "Kiwi", "kiwi fruit"],
-    ["Нимбэг", "Lemon", "lemon fruit"], ["Анар", "Pomegranate", "pomegranate fruit"], ["Чавга", "Plum", "plum fruit"],
-    ["Гуава", "Guava", "guava fruit"], ["Авокадо", "Avocado", "avocado fruit"], ["Кокос", "Coconut", "coconut fruit"],
-    ["Бөөрөлзгөнө", "Raspberry", "raspberry berry"], ["Нэрс", "Blueberry", "blueberry berry"], ["Амтат гуа", "Melon", "melon fruit"],
-    ["Аньс", "Lingonberry", "lingonberry berry"], ["Чацаргана", "Sea buckthorn", "sea buckthorn berry"], ["Үхрийн нүд", "Blackcurrant", "blackcurrant berry"],
-    ["Улаалзгана", "Redcurrant", "redcurrant berry"], ["Мойл", "Bird cherry", "bird cherry berry"], ["Долоогоно", "Hawthorn", "hawthorn berry"],
-    ["Нохойн хошуу", "Rosehip", "rosehip berry"], ["Гүйлс", "Apricot", "apricot fruit"], ["Чихэрлэг алим", "Sweet apple", "red apple fruit"],
+  "animals": [
+    [
+      "Баавгай",
+      "Bear",
+      "bear animal"
+    ],
+    [
+      "Үнэг",
+      "Fox",
+      "fox animal"
+    ],
+    [
+      "Буга",
+      "Deer",
+      "deer animal"
+    ],
+    [
+      "Чоно",
+      "Wolf",
+      "wolf animal"
+    ],
+    [
+      "Туулай",
+      "Rabbit",
+      "rabbit animal"
+    ],
+    [
+      "Хэрэм",
+      "Squirrel",
+      "squirrel animal"
+    ],
+    [
+      "Үхэр",
+      "Cow",
+      "cow farm animal"
+    ],
+    [
+      "Морь",
+      "Horse",
+      "horse farm animal"
+    ],
+    [
+      "Хонь",
+      "Sheep",
+      "sheep farm animal"
+    ],
+    [
+      "Ямаа",
+      "Goat",
+      "goat farm animal"
+    ],
+    [
+      "Гахай",
+      "Pig",
+      "pig farm animal"
+    ],
+    [
+      "Тахиа",
+      "Chicken",
+      "chicken farm animal"
+    ],
+    [
+      "Арслан",
+      "Lion",
+      "lion african animal"
+    ],
+    [
+      "Заан",
+      "Elephant",
+      "elephant african animal"
+    ],
+    [
+      "Анааш",
+      "Giraffe",
+      "giraffe african animal"
+    ],
+    [
+      "Тахь",
+      "Zebra",
+      "zebra african animal"
+    ],
+    [
+      "Сармагчин",
+      "Monkey",
+      "monkey animal"
+    ],
+    [
+      "Матар",
+      "Crocodile",
+      "crocodile animal"
+    ],
+    [
+      "Бар",
+      "Tiger",
+      "tiger animal"
+    ],
+    [
+      "Ирвэс",
+      "Leopard",
+      "leopard animal"
+    ],
+    [
+      "Хирс",
+      "Rhino",
+      "rhinoceros animal"
+    ],
+    [
+      "Хиппо",
+      "Hippo",
+      "hippopotamus animal"
+    ],
+    [
+      "Тэмээ",
+      "Camel",
+      "camel animal"
+    ],
+    [
+      "Нохой",
+      "Dog",
+      "dog animal"
+    ],
+    [
+      "Муур",
+      "Cat",
+      "cat animal"
+    ],
+    [
+      "Нугас",
+      "Duck",
+      "duck animal"
+    ],
+    [
+      "Галуу",
+      "Goose",
+      "goose animal"
+    ],
+    [
+      "Шар шувуу",
+      "Owl",
+      "owl animal"
+    ],
+    [
+      "Бүргэд",
+      "Eagle",
+      "eagle animal"
+    ],
+    [
+      "Оцон шувуу",
+      "Penguin",
+      "penguin animal"
+    ],
+    [
+      "Загас",
+      "Fish",
+      "fish animal"
+    ],
+    [
+      "Мэлхий",
+      "Frog",
+      "frog animal"
+    ],
+    [
+      "Яст мэлхий",
+      "Turtle",
+      "turtle animal"
+    ],
+    [
+      "Далайн гахай",
+      "Dolphin",
+      "dolphin animal"
+    ],
+    [
+      "Халим",
+      "Whale",
+      "whale animal"
+    ],
+    [
+      "Акул",
+      "Shark",
+      "shark animal"
+    ],
+    [
+      "Наймаалж",
+      "Octopus",
+      "octopus animal"
+    ],
+    [
+      "Эрвээхэй",
+      "Butterfly",
+      "butterfly insect"
+    ],
+    [
+      "Зөгий",
+      "Bee",
+      "bee insect"
+    ],
+    [
+      "Шоргоолж",
+      "Ant",
+      "ant insect"
+    ],
+    [
+      "Хулгана",
+      "Mouse",
+      "mouse animal"
+    ],
+    [
+      "Оцон шувуу",
+      "Penguin",
+      "penguin animal"
+    ],
+    [
+      "Панда",
+      "Panda",
+      "panda animal"
+    ],
+    [
+      "Коала",
+      "Koala",
+      "koala animal"
+    ],
+    [
+      "Кенгуру",
+      "Kangaroo",
+      "kangaroo animal"
+    ],
+    [
+      "Илжиг",
+      "Donkey",
+      "donkey animal"
+    ],
+    [
+      "Лама",
+      "Llama",
+      "llama animal"
+    ],
+    [
+      "Бух",
+      "Bull",
+      "bull animal"
+    ],
+    [
+      "Минж",
+      "Beaver",
+      "beaver animal"
+    ],
+    [
+      "Сарьсан багваахай",
+      "Bat",
+      "bat animal"
+    ]
   ],
-  animals: [
-    ["Баавгай", "Bear", "bear animal"], ["Үнэг", "Fox", "fox animal"], ["Буга", "Deer", "deer animal"],
-    ["Чоно", "Wolf", "wolf animal"], ["Туулай", "Rabbit", "rabbit animal"], ["Хэрэм", "Squirrel", "squirrel animal"],
-    ["Үхэр", "Cow", "cow farm animal"], ["Морь", "Horse", "horse farm animal"], ["Хонь", "Sheep", "sheep farm animal"],
-    ["Ямаа", "Goat", "goat farm animal"], ["Гахай", "Pig", "pig farm animal"], ["Тахиа", "Chicken", "chicken farm animal"],
-    ["Арслан", "Lion", "lion african animal"], ["Заан", "Elephant", "elephant african animal"], ["Анааш", "Giraffe", "giraffe african animal"],
-    ["Тахь", "Zebra", "zebra african animal"], ["Сармагчин", "Monkey", "monkey animal"], ["Матар", "Crocodile", "crocodile animal"],
-    ["Бар", "Tiger", "tiger animal"], ["Ирвэс", "Leopard", "leopard animal"], ["Хирс", "Rhino", "rhinoceros animal"],
-    ["Хиппо", "Hippo", "hippopotamus animal"], ["Тэмээ", "Camel", "camel animal"], ["Нохой", "Dog", "dog animal"],
-    ["Муур", "Cat", "cat animal"], ["Нугас", "Duck", "duck animal"], ["Галуу", "Goose", "goose animal"],
-    ["Шар шувуу", "Owl", "owl animal"], ["Бүргэд", "Eagle", "eagle animal"], ["Оцон шувуу", "Penguin", "penguin animal"],
+  "fruits": [
+    [
+      "Алим",
+      "Apple",
+      "apple fruit"
+    ],
+    [
+      "Банана",
+      "Banana",
+      "banana fruit"
+    ],
+    [
+      "Жүрж",
+      "Orange",
+      "orange fruit"
+    ],
+    [
+      "Усан үзэм",
+      "Grape",
+      "grapes fruit"
+    ],
+    [
+      "Гүзээлзгэнэ",
+      "Strawberry",
+      "strawberry fruit"
+    ],
+    [
+      "Тарвас",
+      "Watermelon",
+      "watermelon fruit"
+    ],
+    [
+      "Лийр",
+      "Pear",
+      "pear fruit"
+    ],
+    [
+      "Тоор",
+      "Peach",
+      "peach fruit"
+    ],
+    [
+      "Интоор",
+      "Cherry",
+      "cherry fruit"
+    ],
+    [
+      "Ананас",
+      "Pineapple",
+      "pineapple fruit"
+    ],
+    [
+      "Манго",
+      "Mango",
+      "mango fruit"
+    ],
+    [
+      "Киви",
+      "Kiwi",
+      "kiwi fruit"
+    ],
+    [
+      "Нимбэг",
+      "Lemon",
+      "lemon fruit"
+    ],
+    [
+      "Анар",
+      "Pomegranate",
+      "pomegranate fruit"
+    ],
+    [
+      "Чавга",
+      "Plum",
+      "plum fruit"
+    ],
+    [
+      "Гуава",
+      "Guava",
+      "guava fruit"
+    ],
+    [
+      "Авокадо",
+      "Avocado",
+      "avocado fruit"
+    ],
+    [
+      "Кокос",
+      "Coconut",
+      "coconut fruit"
+    ],
+    [
+      "Бөөрөлзгөнө",
+      "Raspberry",
+      "raspberry berry"
+    ],
+    [
+      "Нэрс",
+      "Blueberry",
+      "blueberry berry"
+    ],
+    [
+      "Амтат гуа",
+      "Melon",
+      "melon fruit"
+    ],
+    [
+      "Аньс",
+      "Lingonberry",
+      "lingonberry berry"
+    ],
+    [
+      "Чацаргана",
+      "Sea buckthorn",
+      "sea buckthorn berry"
+    ],
+    [
+      "Үхрийн нүд",
+      "Blackcurrant",
+      "blackcurrant berry"
+    ],
+    [
+      "Улаалзгана",
+      "Redcurrant",
+      "redcurrant berry"
+    ],
+    [
+      "Мойл",
+      "Bird cherry",
+      "bird cherry berry"
+    ],
+    [
+      "Долоогоно",
+      "Hawthorn",
+      "hawthorn berry"
+    ],
+    [
+      "Нохойн хошуу",
+      "Rosehip",
+      "rosehip berry"
+    ],
+    [
+      "Гүйлс",
+      "Apricot",
+      "apricot fruit"
+    ],
+    [
+      "Чихэрлэг алим",
+      "Sweet apple",
+      "red apple fruit"
+    ]
   ],
-  cars: [
-    ["Суудлын машин", "Car", "car vehicle"], ["Автобус", "Bus", "bus vehicle"], ["Ачааны машин", "Truck", "truck vehicle"],
-    ["Галт тэрэг", "Train", "train vehicle"], ["Онгоц", "Airplane", "airplane vehicle"], ["Усан онгоц", "Ship", "ship vehicle"],
-    ["Унадаг дугуй", "Bicycle", "bicycle vehicle"], ["Мотоцикл", "Motorcycle", "motorcycle vehicle"], ["Такси", "Taxi", "taxi vehicle"],
-    ["Түргэн тусламж", "Ambulance", "ambulance vehicle"], ["Галын машин", "Fire truck", "fire truck vehicle"], ["Цагдаагийн машин", "Police car", "police car vehicle"],
-    ["Трактор", "Tractor", "tractor vehicle"], ["Экскаватор", "Excavator", "excavator vehicle"], ["Кран", "Crane", "crane vehicle"],
-    ["Сансрын хөлөг", "Rocket", "rocket vehicle"], ["Нисдэг тэрэг", "Helicopter", "helicopter vehicle"], ["Метро", "Metro", "metro train vehicle"],
-    ["Трамвай", "Tram", "tram vehicle"], ["Жийп", "Jeep", "jeep vehicle"], ["Спорт машин", "Sports car", "sports car vehicle"],
-    ["Цахилгаан машин", "Electric car", "electric car vehicle"], ["Мини автобус", "Minibus", "minibus vehicle"], ["Сургуулийн автобус", "School bus", "school bus vehicle"],
-    ["Тэрэг", "Cart", "cart vehicle"], ["Скүүтер", "Scooter", "scooter vehicle"], ["Чиргүүл", "Trailer", "trailer vehicle"],
-    ["Цасны машин", "Snowmobile", "snowmobile vehicle"], ["Завь", "Boat", "boat vehicle"], ["Агаарын бөмбөлөг", "Hot air balloon", "hot air balloon vehicle"],
+  "vehicles": [
+    [
+      "Суудлын машин",
+      "Car",
+      "car vehicle"
+    ],
+    [
+      "Автобус",
+      "Bus",
+      "bus vehicle"
+    ],
+    [
+      "Ачааны машин",
+      "Truck",
+      "truck vehicle"
+    ],
+    [
+      "Галт тэрэг",
+      "Train",
+      "train vehicle"
+    ],
+    [
+      "Онгоц",
+      "Airplane",
+      "airplane vehicle"
+    ],
+    [
+      "Усан онгоц",
+      "Ship",
+      "ship vehicle"
+    ],
+    [
+      "Унадаг дугуй",
+      "Bicycle",
+      "bicycle vehicle"
+    ],
+    [
+      "Мотоцикл",
+      "Motorcycle",
+      "motorcycle vehicle"
+    ],
+    [
+      "Такси",
+      "Taxi",
+      "taxi vehicle"
+    ],
+    [
+      "Түргэн тусламж",
+      "Ambulance",
+      "ambulance vehicle"
+    ],
+    [
+      "Галын машин",
+      "Fire truck",
+      "fire truck vehicle"
+    ],
+    [
+      "Цагдаагийн машин",
+      "Police car",
+      "police car vehicle"
+    ],
+    [
+      "Трактор",
+      "Tractor",
+      "tractor vehicle"
+    ],
+    [
+      "Экскаватор",
+      "Excavator",
+      "excavator vehicle"
+    ],
+    [
+      "Кран",
+      "Crane",
+      "crane vehicle"
+    ],
+    [
+      "Сансрын хөлөг",
+      "Rocket",
+      "rocket vehicle"
+    ],
+    [
+      "Нисдэг тэрэг",
+      "Helicopter",
+      "helicopter vehicle"
+    ],
+    [
+      "Метро",
+      "Metro",
+      "metro train vehicle"
+    ],
+    [
+      "Трамвай",
+      "Tram",
+      "tram vehicle"
+    ],
+    [
+      "Жийп",
+      "Jeep",
+      "jeep vehicle"
+    ],
+    [
+      "Спорт машин",
+      "Sports car",
+      "sports car vehicle"
+    ],
+    [
+      "Цахилгаан машин",
+      "Electric car",
+      "electric car vehicle"
+    ],
+    [
+      "Мини автобус",
+      "Minibus",
+      "minibus vehicle"
+    ],
+    [
+      "Сургуулийн автобус",
+      "School bus",
+      "school bus vehicle"
+    ],
+    [
+      "Тэрэг",
+      "Cart",
+      "cart vehicle"
+    ],
+    [
+      "Скүүтер",
+      "Scooter",
+      "scooter vehicle"
+    ],
+    [
+      "Чиргүүл",
+      "Trailer",
+      "trailer vehicle"
+    ],
+    [
+      "Цасны машин",
+      "Snowmobile",
+      "snowmobile vehicle"
+    ],
+    [
+      "Завь",
+      "Boat",
+      "boat vehicle"
+    ],
+    [
+      "Агаарын бөмбөлөг",
+      "Hot air balloon",
+      "hot air balloon vehicle"
+    ]
   ],
-  countries: [
-    ["Монгол", "Mongolia", "mongolia flag"], ["Хятад", "China", "china flag"], ["Япон", "Japan", "japan flag"],
-    ["Солонгос", "Korea", "korea flag"], ["Америк", "United States", "united states flag"], ["Канад", "Canada", "canada flag"],
-    ["Англи", "United Kingdom", "united kingdom flag"], ["Франц", "France", "france flag"], ["Герман", "Germany", "germany flag"],
-    ["Итали", "Italy", "italy flag"], ["Испани", "Spain", "spain flag"], ["Орос", "Russia", "russia flag"],
-    ["Казахстан", "Kazakhstan", "kazakhstan flag"], ["Турк", "Turkey", "turkey flag"], ["Энэтхэг", "India", "india flag"],
-    ["Австрали", "Australia", "australia flag"], ["Бразил", "Brazil", "brazil flag"], ["Аргентин", "Argentina", "argentina flag"],
-    ["Мексик", "Mexico", "mexico flag"], ["Египет", "Egypt", "egypt flag"], ["Өмнөд Африк", "South Africa", "south africa flag"],
-    ["Кени", "Kenya", "kenya flag"], ["Тайланд", "Thailand", "thailand flag"], ["Вьетнам", "Vietnam", "vietnam flag"],
-    ["Сингапур", "Singapore", "singapore flag"], ["Малайз", "Malaysia", "malaysia flag"], ["Индонез", "Indonesia", "indonesia flag"],
-    ["Шинэ Зеланд", "New Zealand", "new zealand flag"], ["Швед", "Sweden", "sweden flag"], ["Норвеги", "Norway", "norway flag"],
+  "countries": [
+    [
+      "Монгол",
+      "Mongolia",
+      "mongolia flag"
+    ],
+    [
+      "Хятад",
+      "China",
+      "china flag"
+    ],
+    [
+      "Япон",
+      "Japan",
+      "japan flag"
+    ],
+    [
+      "Өмнөд Солонгос",
+      "South Korea",
+      "south korea flag"
+    ],
+    [
+      "Америк",
+      "United States",
+      "united states flag"
+    ],
+    [
+      "Канад",
+      "Canada",
+      "canada flag"
+    ],
+    [
+      "Англи",
+      "United Kingdom",
+      "united kingdom flag"
+    ],
+    [
+      "Франц",
+      "France",
+      "france flag"
+    ],
+    [
+      "Герман",
+      "Germany",
+      "germany flag"
+    ],
+    [
+      "Итали",
+      "Italy",
+      "italy flag"
+    ],
+    [
+      "Испани",
+      "Spain",
+      "spain flag"
+    ],
+    [
+      "Орос",
+      "Russia",
+      "russia flag"
+    ],
+    [
+      "Казахстан",
+      "Kazakhstan",
+      "kazakhstan flag"
+    ],
+    [
+      "Турк",
+      "Turkey",
+      "turkey flag"
+    ],
+    [
+      "Энэтхэг",
+      "India",
+      "india flag"
+    ],
+    [
+      "Австрали",
+      "Australia",
+      "australia flag"
+    ],
+    [
+      "Бразил",
+      "Brazil",
+      "brazil flag"
+    ],
+    [
+      "Аргентин",
+      "Argentina",
+      "argentina flag"
+    ],
+    [
+      "Мексик",
+      "Mexico",
+      "mexico flag"
+    ],
+    [
+      "Египет",
+      "Egypt",
+      "egypt flag"
+    ],
+    [
+      "Өмнөд Африк",
+      "South Africa",
+      "south africa flag"
+    ],
+    [
+      "Кени",
+      "Kenya",
+      "kenya flag"
+    ],
+    [
+      "Тайланд",
+      "Thailand",
+      "thailand flag"
+    ],
+    [
+      "Вьетнам",
+      "Vietnam",
+      "vietnam flag"
+    ],
+    [
+      "Сингапур",
+      "Singapore",
+      "singapore flag"
+    ],
+    [
+      "Малайз",
+      "Malaysia",
+      "malaysia flag"
+    ],
+    [
+      "Индонез",
+      "Indonesia",
+      "indonesia flag"
+    ],
+    [
+      "Шинэ Зеланд",
+      "New Zealand",
+      "new zealand flag"
+    ],
+    [
+      "Швед",
+      "Sweden",
+      "sweden flag"
+    ],
+    [
+      "Норвеги",
+      "Norway",
+      "norway flag"
+    ],
+    [
+      "Финланд",
+      "Finland",
+      "finland flag"
+    ],
+    [
+      "Дани",
+      "Denmark",
+      "denmark flag"
+    ],
+    [
+      "Нидерланд",
+      "Netherlands",
+      "netherlands flag"
+    ],
+    [
+      "Бельги",
+      "Belgium",
+      "belgium flag"
+    ],
+    [
+      "Швейцар",
+      "Switzerland",
+      "switzerland flag"
+    ],
+    [
+      "Австри",
+      "Austria",
+      "austria flag"
+    ],
+    [
+      "Польш",
+      "Poland",
+      "poland flag"
+    ],
+    [
+      "Чех",
+      "Czechia",
+      "czechia flag"
+    ],
+    [
+      "Унгар",
+      "Hungary",
+      "hungary flag"
+    ],
+    [
+      "Румын",
+      "Romania",
+      "romania flag"
+    ],
+    [
+      "Грек",
+      "Greece",
+      "greece flag"
+    ],
+    [
+      "Португал",
+      "Portugal",
+      "portugal flag"
+    ],
+    [
+      "Ирланд",
+      "Ireland",
+      "ireland flag"
+    ],
+    [
+      "Исланд",
+      "Iceland",
+      "iceland flag"
+    ],
+    [
+      "Украин",
+      "Ukraine",
+      "ukraine flag"
+    ],
+    [
+      "Беларусь",
+      "Belarus",
+      "belarus flag"
+    ],
+    [
+      "Узбекистан",
+      "Uzbekistan",
+      "uzbekistan flag"
+    ],
+    [
+      "Киргизстан",
+      "Kyrgyzstan",
+      "kyrgyzstan flag"
+    ],
+    [
+      "Тажикистан",
+      "Tajikistan",
+      "tajikistan flag"
+    ],
+    [
+      "Туркменистан",
+      "Turkmenistan",
+      "turkmenistan flag"
+    ],
+    [
+      "Пакистан",
+      "Pakistan",
+      "pakistan flag"
+    ],
+    [
+      "Бангладеш",
+      "Bangladesh",
+      "bangladesh flag"
+    ],
+    [
+      "Шри Ланка",
+      "Sri Lanka",
+      "sri lanka flag"
+    ],
+    [
+      "Балба",
+      "Nepal",
+      "nepal flag"
+    ],
+    [
+      "Бутан",
+      "Bhutan",
+      "bhutan flag"
+    ],
+    [
+      "Филиппин",
+      "Philippines",
+      "philippines flag"
+    ],
+    [
+      "Камбож",
+      "Cambodia",
+      "cambodia flag"
+    ],
+    [
+      "Лаос",
+      "Laos",
+      "laos flag"
+    ],
+    [
+      "Мьянмар",
+      "Myanmar",
+      "myanmar flag"
+    ],
+    [
+      "Бруней",
+      "Brunei",
+      "brunei flag"
+    ],
+    [
+      "Саудын Араб",
+      "Saudi Arabia",
+      "saudi arabia flag"
+    ],
+    [
+      "Арабын Нэгдсэн Эмират",
+      "United Arab Emirates",
+      "united arab emirates flag"
+    ],
+    [
+      "Катар",
+      "Qatar",
+      "qatar flag"
+    ],
+    [
+      "Кувейт",
+      "Kuwait",
+      "kuwait flag"
+    ],
+    [
+      "Израил",
+      "Israel",
+      "israel flag"
+    ],
+    [
+      "Иран",
+      "Iran",
+      "iran flag"
+    ],
+    [
+      "Ирак",
+      "Iraq",
+      "iraq flag"
+    ],
+    [
+      "Йордан",
+      "Jordan",
+      "jordan flag"
+    ],
+    [
+      "Ливан",
+      "Lebanon",
+      "lebanon flag"
+    ],
+    [
+      "Марокко",
+      "Morocco",
+      "morocco flag"
+    ],
+    [
+      "Алжир",
+      "Algeria",
+      "algeria flag"
+    ],
+    [
+      "Тунис",
+      "Tunisia",
+      "tunisia flag"
+    ],
+    [
+      "Этиоп",
+      "Ethiopia",
+      "ethiopia flag"
+    ],
+    [
+      "Нигери",
+      "Nigeria",
+      "nigeria flag"
+    ],
+    [
+      "Гана",
+      "Ghana",
+      "ghana flag"
+    ],
+    [
+      "Танзани",
+      "Tanzania",
+      "tanzania flag"
+    ],
+    [
+      "Уганда",
+      "Uganda",
+      "uganda flag"
+    ],
+    [
+      "Зимбабве",
+      "Zimbabwe",
+      "zimbabwe flag"
+    ],
+    [
+      "Чили",
+      "Chile",
+      "chile flag"
+    ],
+    [
+      "Перу",
+      "Peru",
+      "peru flag"
+    ],
+    [
+      "Колумб",
+      "Colombia",
+      "colombia flag"
+    ],
+    [
+      "Венесуэл",
+      "Venezuela",
+      "venezuela flag"
+    ],
+    [
+      "Уругвай",
+      "Uruguay",
+      "uruguay flag"
+    ],
+    [
+      "Парагвай",
+      "Paraguay",
+      "paraguay flag"
+    ],
+    [
+      "Боливи",
+      "Bolivia",
+      "bolivia flag"
+    ],
+    [
+      "Куба",
+      "Cuba",
+      "cuba flag"
+    ],
+    [
+      "Доминикан",
+      "Dominican Republic",
+      "dominican republic flag"
+    ],
+    [
+      "Ямайка",
+      "Jamaica",
+      "jamaica flag"
+    ],
+    [
+      "Панам",
+      "Panama",
+      "panama flag"
+    ],
+    [
+      "Коста Рика",
+      "Costa Rica",
+      "costa rica flag"
+    ],
+    [
+      "Израил",
+      "Israel",
+      "israel flag"
+    ],
+    [
+      "Гүрж",
+      "Georgia",
+      "georgia flag"
+    ],
+    [
+      "Армен",
+      "Armenia",
+      "armenia flag"
+    ],
+    [
+      "Азербайжан",
+      "Azerbaijan",
+      "azerbaijan flag"
+    ],
+    [
+      "Хорват",
+      "Croatia",
+      "croatia flag"
+    ],
+    [
+      "Латви",
+      "Latvia",
+      "latvia flag"
+    ],
+    [
+      "Литва",
+      "Lithuania",
+      "lithuania flag"
+    ],
+    [
+      "Эстони",
+      "Estonia",
+      "estonia flag"
+    ],
+    [
+      "Серби",
+      "Serbia",
+      "serbia flag"
+    ],
+    [
+      "Словени",
+      "Slovenia",
+      "slovenia flag"
+    ]
   ],
-  numbers: [
-    ["Нэг", "One", "number 1"], ["Хоёр", "Two", "number 2"], ["Гурав", "Three", "number 3"], ["Дөрөв", "Four", "number 4"],
-    ["Тав", "Five", "number 5"], ["Зургаа", "Six", "number 6"], ["Долоо", "Seven", "number 7"], ["Найм", "Eight", "number 8"],
-    ["Ес", "Nine", "number 9"], ["Арав", "Ten", "number 10"], ["Арван нэг", "Eleven", "number 11"], ["Арван хоёр", "Twelve", "number 12"],
-    ["Арван гурав", "Thirteen", "number 13"], ["Арван дөрөв", "Fourteen", "number 14"], ["Арван тав", "Fifteen", "number 15"],
-    ["Арван зургаа", "Sixteen", "number 16"], ["Арван долоо", "Seventeen", "number 17"], ["Арван найм", "Eighteen", "number 18"],
-    ["Арван ес", "Nineteen", "number 19"], ["Хорь", "Twenty", "number 20"],
+  "numbers": [
+    [
+      "Нэг",
+      "One",
+      "number 1"
+    ],
+    [
+      "Хоёр",
+      "Two",
+      "number 2"
+    ],
+    [
+      "Гурав",
+      "Three",
+      "number 3"
+    ],
+    [
+      "Дөрөв",
+      "Four",
+      "number 4"
+    ],
+    [
+      "Тав",
+      "Five",
+      "number 5"
+    ],
+    [
+      "Зургаа",
+      "Six",
+      "number 6"
+    ],
+    [
+      "Долоо",
+      "Seven",
+      "number 7"
+    ],
+    [
+      "Найм",
+      "Eight",
+      "number 8"
+    ],
+    [
+      "Ес",
+      "Nine",
+      "number 9"
+    ],
+    [
+      "Арав",
+      "Ten",
+      "number 10"
+    ],
+    [
+      "Арван нэг",
+      "Eleven",
+      "number 11"
+    ],
+    [
+      "Арван хоёр",
+      "Twelve",
+      "number 12"
+    ],
+    [
+      "Арван гурав",
+      "Thirteen",
+      "number 13"
+    ],
+    [
+      "Арван дөрөв",
+      "Fourteen",
+      "number 14"
+    ],
+    [
+      "Арван тав",
+      "Fifteen",
+      "number 15"
+    ],
+    [
+      "Арван зургаа",
+      "Sixteen",
+      "number 16"
+    ],
+    [
+      "Арван долоо",
+      "Seventeen",
+      "number 17"
+    ],
+    [
+      "Арван найм",
+      "Eighteen",
+      "number 18"
+    ],
+    [
+      "Арван ес",
+      "Nineteen",
+      "number 19"
+    ],
+    [
+      "Хорь",
+      "Twenty",
+      "number 20"
+    ],
+    [
+      "Хорин нэг",
+      "Twenty-one",
+      "number 21"
+    ],
+    [
+      "Хорин хоёр",
+      "Twenty-two",
+      "number 22"
+    ],
+    [
+      "Хорин гурав",
+      "Twenty-three",
+      "number 23"
+    ],
+    [
+      "Хорин дөрөв",
+      "Twenty-four",
+      "number 24"
+    ],
+    [
+      "Хорин тав",
+      "Twenty-five",
+      "number 25"
+    ],
+    [
+      "Хорин зургаа",
+      "Twenty-six",
+      "number 26"
+    ],
+    [
+      "Хорин долоо",
+      "Twenty-seven",
+      "number 27"
+    ],
+    [
+      "Хорин найм",
+      "Twenty-eight",
+      "number 28"
+    ],
+    [
+      "Хорин ес",
+      "Twenty-nine",
+      "number 29"
+    ],
+    [
+      "Гуч",
+      "Thirty",
+      "number 30"
+    ]
   ],
+  "colors": [
+    [
+      "Улаан",
+      "Red",
+      "color red #e63946"
+    ],
+    [
+      "Хөх",
+      "Blue",
+      "color blue #1d4ed8"
+    ],
+    [
+      "Шар",
+      "Yellow",
+      "color yellow #facc15"
+    ],
+    [
+      "Ногоон",
+      "Green",
+      "color green #22c55e"
+    ],
+    [
+      "Ягаан",
+      "Pink",
+      "color pink #f472b6"
+    ],
+    [
+      "Улбар шар",
+      "Orange",
+      "color orange #f97316"
+    ],
+    [
+      "Нил ягаан",
+      "Purple",
+      "color purple #8b5cf6"
+    ],
+    [
+      "Хар",
+      "Black",
+      "color black #111827"
+    ],
+    [
+      "Цагаан",
+      "White",
+      "color white #ffffff"
+    ],
+    [
+      "Бор",
+      "Brown",
+      "color brown #92400e"
+    ],
+    [
+      "Саарал",
+      "Gray",
+      "color gray #9ca3af"
+    ],
+    [
+      "Алтан",
+      "Gold",
+      "color gold #f59e0b"
+    ],
+    [
+      "Мөнгөн",
+      "Silver",
+      "color silver #cbd5e1"
+    ],
+    [
+      "Тэнгэрийн цэнхэр",
+      "Sky blue",
+      "color sky blue #38bdf8"
+    ],
+    [
+      "Оюу",
+      "Turquoise",
+      "color turquoise #14b8a6"
+    ],
+    [
+      "Номин",
+      "Navy",
+      "color navy #1e3a8a"
+    ],
+    [
+      "Шүрэн",
+      "Coral",
+      "color coral #fb7185"
+    ],
+    [
+      "Гаа",
+      "Mint",
+      "color mint #86efac"
+    ],
+    [
+      "Тоорын ягаан",
+      "Peach",
+      "color peach #fdba74"
+    ],
+    [
+      "Цөцгий",
+      "Cream",
+      "color cream #fef3c7"
+    ]
+  ],
+  "shapes": [
+    [
+      "Дугуй",
+      "Circle",
+      "shape circle"
+    ],
+    [
+      "Дөрвөлжин",
+      "Square",
+      "shape square"
+    ],
+    [
+      "Гурвалжин",
+      "Triangle",
+      "shape triangle"
+    ],
+    [
+      "Тэгш өнцөгт",
+      "Rectangle",
+      "shape rectangle"
+    ],
+    [
+      "Од",
+      "Star",
+      "shape star"
+    ],
+    [
+      "Зүрх",
+      "Heart",
+      "shape heart"
+    ],
+    [
+      "Зууван",
+      "Oval",
+      "shape oval"
+    ],
+    [
+      "Ромб",
+      "Diamond",
+      "shape diamond"
+    ],
+    [
+      "Хагас дугуй",
+      "Semicircle",
+      "shape semicircle"
+    ],
+    [
+      "Таван өнцөгт",
+      "Pentagon",
+      "shape pentagon"
+    ],
+    [
+      "Зургаан өнцөгт",
+      "Hexagon",
+      "shape hexagon"
+    ],
+    [
+      "Сум",
+      "Arrow",
+      "shape arrow"
+    ],
+    [
+      "Загалмай",
+      "Cross",
+      "shape cross"
+    ],
+    [
+      "Сар",
+      "Crescent",
+      "shape crescent"
+    ],
+    [
+      "Цэцэг",
+      "Flower",
+      "shape flower"
+    ],
+    [
+      "Үүл",
+      "Cloud",
+      "shape cloud"
+    ],
+    [
+      "Долгион",
+      "Wave",
+      "shape wave"
+    ],
+    [
+      "Спираль",
+      "Spiral",
+      "shape spiral"
+    ],
+    [
+      "Цэг",
+      "Dot",
+      "shape dot"
+    ],
+    [
+      "Шугам",
+      "Line",
+      "shape line"
+    ]
+  ],
+  "body": [
+    [
+      "Толгой",
+      "Head",
+      "body head"
+    ],
+    [
+      "Үс",
+      "Hair",
+      "body hair"
+    ],
+    [
+      "Нүд",
+      "Eye",
+      "body eye"
+    ],
+    [
+      "Чих",
+      "Ear",
+      "body ear"
+    ],
+    [
+      "Хамар",
+      "Nose",
+      "body nose"
+    ],
+    [
+      "Ам",
+      "Mouth",
+      "body mouth"
+    ],
+    [
+      "Шүд",
+      "Tooth",
+      "body tooth"
+    ],
+    [
+      "Хэл",
+      "Tongue",
+      "body tongue"
+    ],
+    [
+      "Хүзүү",
+      "Neck",
+      "body neck"
+    ],
+    [
+      "Мөр",
+      "Shoulder",
+      "body shoulder"
+    ],
+    [
+      "Гар",
+      "Arm",
+      "body arm"
+    ],
+    [
+      "Алга",
+      "Hand",
+      "body hand"
+    ],
+    [
+      "Хуруу",
+      "Finger",
+      "body finger"
+    ],
+    [
+      "Цээж",
+      "Chest",
+      "body chest"
+    ],
+    [
+      "Гэдэс",
+      "Belly",
+      "body belly"
+    ],
+    [
+      "Нуруу",
+      "Back",
+      "body back"
+    ],
+    [
+      "Хөл",
+      "Leg",
+      "body leg"
+    ],
+    [
+      "Өвдөг",
+      "Knee",
+      "body knee"
+    ],
+    [
+      "Тавхай",
+      "Foot",
+      "body foot"
+    ],
+    [
+      "Хөлийн хуруу",
+      "Toe",
+      "body toe"
+    ],
+    [
+      "Зүрх",
+      "Heart",
+      "body heart"
+    ],
+    [
+      "Тархи",
+      "Brain",
+      "body brain"
+    ],
+    [
+      "Уруул",
+      "Lips",
+      "body lips"
+    ],
+    [
+      "Хацар",
+      "Cheek",
+      "body cheek"
+    ],
+    [
+      "Эрүү",
+      "Chin",
+      "body chin"
+    ],
+    [
+      "Дух",
+      "Forehead",
+      "body forehead"
+    ],
+    [
+      "Сормуус",
+      "Eyelash",
+      "body eyelash"
+    ],
+    [
+      "Хөмсөг",
+      "Eyebrow",
+      "body eyebrow"
+    ],
+    [
+      "Бугуй",
+      "Wrist",
+      "body wrist"
+    ],
+    [
+      "Шагай",
+      "Ankle",
+      "body ankle"
+    ]
+  ],
+  "food": [
+    [
+      "Талх",
+      "Bread",
+      "food bread"
+    ],
+    [
+      "Сүү",
+      "Milk",
+      "food milk"
+    ],
+    [
+      "Өндөг",
+      "Egg",
+      "food egg"
+    ],
+    [
+      "Бяслаг",
+      "Cheese",
+      "food cheese"
+    ],
+    [
+      "Будаа",
+      "Rice",
+      "food rice"
+    ],
+    [
+      "Гоймон",
+      "Noodles",
+      "food noodles"
+    ],
+    [
+      "Шөл",
+      "Soup",
+      "food soup"
+    ],
+    [
+      "Банш",
+      "Dumpling",
+      "food dumpling"
+    ],
+    [
+      "Бууз",
+      "Buuz",
+      "food dumpling"
+    ],
+    [
+      "Хуушуур",
+      "Khuushuur",
+      "food pastry"
+    ],
+    [
+      "Пицца",
+      "Pizza",
+      "food pizza"
+    ],
+    [
+      "Бургер",
+      "Burger",
+      "food burger"
+    ],
+    [
+      "Салат",
+      "Salad",
+      "food salad"
+    ],
+    [
+      "Төмс",
+      "Potato",
+      "food potato"
+    ],
+    [
+      "Лууван",
+      "Carrot",
+      "food carrot"
+    ],
+    [
+      "Улаан лооль",
+      "Tomato",
+      "food tomato"
+    ],
+    [
+      "Өргөст хэмх",
+      "Cucumber",
+      "food cucumber"
+    ],
+    [
+      "Эрдэнэ шиш",
+      "Corn",
+      "food corn"
+    ],
+    [
+      "Тахианы мах",
+      "Chicken",
+      "food chicken"
+    ],
+    [
+      "Загас",
+      "Fish",
+      "food fish"
+    ],
+    [
+      "Мах",
+      "Meat",
+      "food meat"
+    ],
+    [
+      "Тараг",
+      "Yogurt",
+      "food yogurt"
+    ],
+    [
+      "Зайрмаг",
+      "Ice cream",
+      "food ice cream"
+    ],
+    [
+      "Жигнэмэг",
+      "Cookie",
+      "food cookie"
+    ],
+    [
+      "Бялуу",
+      "Cake",
+      "food cake"
+    ],
+    [
+      "Шоколад",
+      "Chocolate",
+      "food chocolate"
+    ],
+    [
+      "Зөгийн бал",
+      "Honey",
+      "food honey"
+    ],
+    [
+      "Цай",
+      "Tea",
+      "food tea"
+    ],
+    [
+      "Ус",
+      "Water",
+      "food water"
+    ],
+    [
+      "Шүүс",
+      "Juice",
+      "food juice"
+    ]
+  ],
+  "family": [
+    [
+      "Аав",
+      "Father",
+      "family father"
+    ],
+    [
+      "Ээж",
+      "Mother",
+      "family mother"
+    ],
+    [
+      "Ах",
+      "Older brother",
+      "family brother"
+    ],
+    [
+      "Эгч",
+      "Older sister",
+      "family sister"
+    ],
+    [
+      "Дүү",
+      "Younger sibling",
+      "family child"
+    ],
+    [
+      "Өвөө",
+      "Grandfather",
+      "family grandfather"
+    ],
+    [
+      "Эмээ",
+      "Grandmother",
+      "family grandmother"
+    ],
+    [
+      "Хүү",
+      "Son",
+      "family son"
+    ],
+    [
+      "Охин",
+      "Daughter",
+      "family daughter"
+    ],
+    [
+      "Найз",
+      "Friend",
+      "family friend"
+    ],
+    [
+      "Багш",
+      "Teacher",
+      "family teacher"
+    ],
+    [
+      "Эмч",
+      "Doctor",
+      "family doctor"
+    ],
+    [
+      "Авга ах",
+      "Uncle",
+      "family uncle"
+    ],
+    [
+      "Авга эгч",
+      "Aunt",
+      "family aunt"
+    ],
+    [
+      "Үеэл",
+      "Cousin",
+      "family cousin"
+    ],
+    [
+      "Хүүхэд",
+      "Child",
+      "family child"
+    ],
+    [
+      "Нярай",
+      "Baby",
+      "family baby"
+    ],
+    [
+      "Ихэр",
+      "Twins",
+      "family twins"
+    ],
+    [
+      "Гэр бүл",
+      "Family",
+      "family group"
+    ],
+    [
+      "Бид",
+      "Us",
+      "family group"
+    ]
+  ]
 };
 
 const mnLetters = "А Б В Г Д Е Ё Ж З И Й К Л М Н О Ө П Р С Т У Ү Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я".split(" ");
@@ -169,6 +1978,12 @@ function imageUrl(query, index = 1) {
   const number = numberImage(query, index);
   if (number) return number;
 
+  const color = colorImage(query, index);
+  if (color) return color;
+
+  const shape = shapeImage(query, index);
+  if (shape) return shape;
+
   const emoji = cartoonEmoji(query);
   const palette = [
     ["#fff3b0", "#ff8fab", "#5aa9e6"],
@@ -211,17 +2026,78 @@ function numberImage(query, index = 1) {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
+function colorImage(query, index = 1) {
+  const match = query.match(/#([0-9a-f]{6})/i);
+  if (!query.toLowerCase().includes("color") || !match) return "";
+  const hex = `#${match[1]}`;
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520">
+      <rect width="640" height="520" rx="46" fill="#fffaf0"/>
+      <circle cx="320" cy="250" r="150" fill="${hex}" stroke="#233044" stroke-width="12"/>
+      <circle cx="205" cy="138" r="42" fill="${hex}" opacity=".5"/>
+      <circle cx="468" cy="382" r="62" fill="${hex}" opacity=".35"/>
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function shapeImage(query, index = 1) {
+  const q = query.toLowerCase();
+  if (!q.includes("shape")) return "";
+  const fill = ["#5aa9e6", "#ef6f7b", "#5fb47a", "#f8d66d", "#8b5cf6"][index % 5];
+  const shape = q.replace("shape", "").trim();
+  const shapes = {
+    circle: `<circle cx="320" cy="260" r="138" fill="${fill}"/>`,
+    square: `<rect x="190" y="130" width="260" height="260" rx="18" fill="${fill}"/>`,
+    triangle: `<polygon points="320,112 470,390 170,390" fill="${fill}"/>`,
+    rectangle: `<rect x="150" y="165" width="340" height="190" rx="20" fill="${fill}"/>`,
+    star: `<polygon points="320,96 365,205 482,215 393,290 420,405 320,344 220,405 247,290 158,215 275,205" fill="${fill}"/>`,
+    heart: `<path d="M320 408C220 330 156 276 156 206c0-52 39-91 90-91 31 0 59 15 74 39 15-24 43-39 74-39 51 0 90 39 90 91 0 70-64 124-164 202z" fill="${fill}"/>`,
+    oval: `<ellipse cx="320" cy="260" rx="172" ry="116" fill="${fill}"/>`,
+    diamond: `<polygon points="320,90 490,260 320,430 150,260" fill="${fill}"/>`,
+    semicircle: `<path d="M160 330a160 160 0 0 1 320 0z" fill="${fill}"/>`,
+    pentagon: `<polygon points="320,90 486,210 424,410 216,410 154,210" fill="${fill}"/>`,
+    hexagon: `<polygon points="220,120 420,120 520,260 420,400 220,400 120,260" fill="${fill}"/>`,
+    arrow: `<polygon points="350,120 520,260 350,400 350,310 140,310 140,210 350,210" fill="${fill}"/>`,
+    cross: `<path d="M270 110h100v110h110v90H370v110H270V310H160v-90h110z" fill="${fill}"/>`,
+    crescent: `<path d="M380 110c-84 32-132 110-112 190 18 72 82 120 154 120-34 27-78 42-126 36-102-13-174-105-161-207 13-101 105-173 207-160 13 2 26 5 38 9z" fill="${fill}"/>`,
+    flower: `<g fill="${fill}"><circle cx="320" cy="260" r="58"/><circle cx="320" cy="135" r="70"/><circle cx="438" cy="220" r="70"/><circle cx="392" cy="355" r="70"/><circle cx="248" cy="355" r="70"/><circle cx="202" cy="220" r="70"/></g>`,
+    cloud: `<path d="M205 340c-48 0-85-35-85-78 0-41 34-74 77-78 18-58 73-98 138-98 74 0 136 51 149 119 48 9 84 48 84 95 0 55-48 40-108 40z" fill="${fill}"/>`,
+    wave: `<path d="M96 292c70-74 140-74 210 0s140 74 238 0v92c-98 74-168 74-238 0s-140-74-210 0z" fill="${fill}"/>`,
+    spiral: `<path d="M320 116c98 0 178 74 178 166 0 82-66 148-148 148-72 0-130-52-130-116 0-56 48-100 106-100 50 0 90 36 90 80 0 38-32 68-72 68-34 0-62-24-62-54 0-24 22-44 48-44" fill="none" stroke="${fill}" stroke-width="34" stroke-linecap="round"/>`,
+    dot: `<circle cx="320" cy="260" r="76" fill="${fill}"/>`,
+    line: `<rect x="120" y="235" width="400" height="50" rx="25" fill="${fill}"/>`,
+  };
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520">
+      <rect width="640" height="520" rx="46" fill="#fffaf0"/>
+      ${shapes[shape] || shapes.circle}
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
 function countryFlagIcon(query) {
   const q = query.toLowerCase();
   const map = [
-    ["mongolia", "mn"], ["china", "cn"], ["japan", "jp"], ["korea", "kr"],
-    ["united states", "us"], ["canada", "ca"], ["united kingdom", "gb"],
-    ["france", "fr"], ["germany", "de"], ["italy", "it"], ["spain", "es"],
-    ["russia", "ru"], ["kazakhstan", "kz"], ["turkey", "tr"], ["india", "in"],
-    ["australia", "au"], ["brazil", "br"], ["argentina", "ar"], ["mexico", "mx"],
-    ["egypt", "eg"], ["south africa", "za"], ["kenya", "ke"], ["thailand", "th"],
-    ["vietnam", "vn"], ["singapore", "sg"], ["malaysia", "my"], ["indonesia", "id"],
-    ["new zealand", "nz"], ["sweden", "se"], ["norway", "no"],
+    ["united arab emirates", "ae"], ["united kingdom", "gb"], ["united states", "us"], ["south korea", "kr"], ["south africa", "za"],
+    ["dominican republic", "do"], ["new zealand", "nz"], ["saudi arabia", "sa"], ["sri lanka", "lk"], ["costa rica", "cr"],
+    ["mongolia", "mn"], ["china", "cn"], ["japan", "jp"], ["korea", "kr"], ["canada", "ca"],
+    ["france", "fr"], ["germany", "de"], ["italy", "it"], ["spain", "es"], ["russia", "ru"],
+    ["kazakhstan", "kz"], ["turkey", "tr"], ["india", "in"], ["australia", "au"], ["brazil", "br"],
+    ["argentina", "ar"], ["mexico", "mx"], ["egypt", "eg"], ["kenya", "ke"], ["thailand", "th"],
+    ["vietnam", "vn"], ["singapore", "sg"], ["malaysia", "my"], ["indonesia", "id"], ["sweden", "se"],
+    ["norway", "no"], ["finland", "fi"], ["denmark", "dk"], ["netherlands", "nl"], ["belgium", "be"],
+    ["switzerland", "ch"], ["austria", "at"], ["poland", "pl"], ["czechia", "cz"], ["hungary", "hu"],
+    ["romania", "ro"], ["greece", "gr"], ["portugal", "pt"], ["ireland", "ie"], ["iceland", "is"],
+    ["ukraine", "ua"], ["belarus", "by"], ["uzbekistan", "uz"], ["kyrgyzstan", "kg"], ["tajikistan", "tj"],
+    ["turkmenistan", "tm"], ["pakistan", "pk"], ["bangladesh", "bd"], ["nepal", "np"], ["bhutan", "bt"],
+    ["philippines", "ph"], ["cambodia", "kh"], ["laos", "la"], ["myanmar", "mm"], ["brunei", "bn"],
+    ["qatar", "qa"], ["kuwait", "kw"], ["israel", "il"], ["iran", "ir"], ["iraq", "iq"],
+    ["jordan", "jo"], ["lebanon", "lb"], ["morocco", "ma"], ["algeria", "dz"], ["tunisia", "tn"],
+    ["ethiopia", "et"], ["nigeria", "ng"], ["ghana", "gh"], ["tanzania", "tz"], ["uganda", "ug"],
+    ["zimbabwe", "zw"], ["chile", "cl"], ["peru", "pe"], ["colombia", "co"], ["venezuela", "ve"],
+    ["uruguay", "uy"], ["paraguay", "py"], ["bolivia", "bo"], ["cuba", "cu"], ["jamaica", "jm"],
+    ["panama", "pa"], ["georgia", "ge"], ["armenia", "am"], ["azerbaijan", "az"], ["croatia", "hr"],
+    ["latvia", "lv"], ["lithuania", "lt"], ["estonia", "ee"], ["serbia", "rs"], ["slovenia", "si"],
   ];
   const found = map.find(([name]) => q.includes(name));
   return found ? `https://flagcdn.com/${found[1]}.svg` : "";
@@ -312,6 +2188,16 @@ function cartoonEmoji(query) {
     ["tram", "🚋"], ["taxi", "🚕"], ["truck", "🚚"], ["tractor", "🚜"], ["bus", "🚌"],
     ["ship", "🚢"], ["boat", "⛵"], ["balloon", "🎈"], ["snowmobile", "🛷"], ["trailer", "🚚"],
     ["jeep", "🚙"], ["cart", "🛒"], ["vehicle", "🚗"], ["ball", "⚽"], ["car", "🚗"], ["train", "🚂"], ["airplane", "✈️"],
+    ["head", "🙂"], ["hair", "💇"], ["eye", "👁️"], ["ear", "👂"], ["nose", "👃"], ["mouth", "👄"], ["tooth", "🦷"], ["tongue", "👅"],
+    ["neck", "🙂"], ["shoulder", "💪"], ["arm", "💪"], ["hand", "✋"], ["finger", "☝️"], ["chest", "🧍"], ["belly", "🧍"], ["back", "🧍"],
+    ["leg", "🦵"], ["knee", "🦵"], ["foot", "🦶"], ["toe", "🦶"], ["brain", "🧠"], ["lips", "👄"], ["cheek", "🙂"], ["chin", "🙂"],
+    ["forehead", "🙂"], ["eyelash", "👁️"], ["eyebrow", "🙂"], ["wrist", "✋"], ["ankle", "🦶"],
+    ["bread", "🍞"], ["milk", "🥛"], ["egg", "🥚"], ["cheese", "🧀"], ["rice", "🍚"], ["noodles", "🍜"], ["soup", "🍲"], ["dumpling", "🥟"],
+    ["pastry", "🥟"], ["pizza", "🍕"], ["burger", "🍔"], ["salad", "🥗"], ["potato", "🥔"], ["tomato", "🍅"], ["chicken", "🍗"], ["meat", "🥩"],
+    ["yogurt", "🥛"], ["ice cream", "🍦"], ["cookie", "🍪"], ["cake", "🍰"], ["chocolate", "🍫"], ["honey", "🍯"], ["tea", "🍵"], ["juice", "🧃"],
+    ["father", "👨"], ["mother", "👩"], ["brother", "👦"], ["sister", "👧"], ["sibling", "🧒"], ["grandfather", "👴"], ["grandmother", "👵"],
+    ["son", "👦"], ["daughter", "👧"], ["friend", "🧒"], ["teacher", "🧑‍🏫"], ["doctor", "🧑‍⚕️"], ["uncle", "👨"], ["aunt", "👩"], ["cousin", "🧒"],
+    ["baby", "👶"], ["twins", "👯"], ["family", "👨‍👩‍👧"],
     ["mongolia", "🇲🇳"], ["china", "🇨🇳"], ["japan", "🇯🇵"], ["korea", "🇰🇷"], ["united states", "🇺🇸"],
     ["canada", "🇨🇦"], ["united kingdom", "🇬🇧"], ["france", "🇫🇷"], ["germany", "🇩🇪"], ["italy", "🇮🇹"],
     ["spain", "🇪🇸"], ["russia", "🇷🇺"], ["kazakhstan", "🇰🇿"], ["turkey", "🇹🇷"], ["india", "🇮🇳"],

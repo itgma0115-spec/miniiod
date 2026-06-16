@@ -1,4 +1,4 @@
-const CACHE_NAME = "minii-od-v1";
+const CACHE_NAME = "minii-od-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
