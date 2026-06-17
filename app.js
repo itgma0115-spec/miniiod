@@ -1974,6 +1974,8 @@ function imageUrl(query, index = 1) {
   const flag = countryFlagIcon(query);
   if (flag) return flag;
 
+  const icons8 = icons8FruitIcon(query);
+  if (icons8) return icons8;
 
   const number = numberImage(query, index);
   if (number) return number;
@@ -1983,9 +1985,6 @@ function imageUrl(query, index = 1) {
 
   const shape = shapeImage(query, index);
   if (shape) return shape;
-
-  const photo = photoImageUrl(query, index);
-  if (photo) return photo;
 
   const emoji = cartoonEmoji(query);
   const palette = [
@@ -2007,19 +2006,6 @@ function imageUrl(query, index = 1) {
       <text x="320" y="458" text-anchor="middle" font-size="34" font-weight="800" fill="#233044" font-family="Arial, sans-serif">${escapeSvg(labelText)}</text>
     </svg>`;
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-}
-
-function photoImageUrl(query, index = 1) {
-  const q = query.toLowerCase();
-  if (q.includes("letter") || q.includes("xray") || q.includes("x mark")) return "";
-  const cleaned = q
-    .replace(/#[0-9a-f]{6}/gi, "")
-    .replace(/\b(fruit|animal|farm|african|vehicle|vegetable|body|part|family|food)\b/gi, "")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (!cleaned || cleaned.length < 2) return "";
-  const keywords = encodeURIComponent(cleaned.replace(/\s+/g, ","));
-  return "https://loremflickr.com/640/520/" + keywords + "?lock=" + index;
 }
 
 function numberImage(query, index = 1) {
@@ -2117,6 +2103,54 @@ function countryFlagIcon(query) {
   ];
   const found = map.find(([name]) => q.includes(name));
   return found ? `https://flagcdn.com/${found[1]}.svg` : "";
+}
+
+function icons8FruitIcon(query) {
+  const q = query.toLowerCase();
+  const base = "https://img.icons8.com/color/240/";
+  const map = [
+    ["red apple", "apple.png"],
+    ["apple", "apple.png"],
+    ["banana", "banana.png"],
+    ["orange", "orange.png"],
+    ["grapes", "grapes.png"],
+    ["grape", "grapes.png"],
+    ["strawberry", "strawberry.png"],
+    ["watermelon", "watermelon.png"],
+    ["pear", "pear.png"],
+    ["peach", "peach.png"],
+    ["cherry", "cherry.png"],
+    ["pineapple", "pineapple.png"],
+    ["mango", "mango.png"],
+    ["kiwi", "kiwi.png"],
+    ["lemon", "lemon.png"],
+    ["pomegranate", "pomegranate.png"],
+    ["plum", "plum.png"],
+    ["guava", "guava.png"],
+    ["avocado", "avocado.png"],
+    ["coconut", "coconut.png"],
+    ["raspberry", "raspberry.png"],
+    ["blueberry", "blueberry.png"],
+    ["melon", "melon.png"],
+    ["apricot", "apricot.png"],
+    ["lime", "lime.png"],
+    ["grapefruit", "grapefruit.png"],
+    ["dragon fruit", "dragon-fruit.png"],
+    ["fig", "fig.png"],
+    ["date", "date-fruit.png"],
+    ["persimmon", "persimmon.png"],
+    ["blackcurrant", "currant.png"],
+    ["redcurrant", "currant.png"],
+    ["lingonberry", "berries.png"],
+    ["buckthorn", "berries.png"],
+    ["bird cherry", "cherry.png"],
+    ["hawthorn", "berries.png"],
+    ["rosehip", "berries.png"],
+    ["berry", "berries.png"],
+    ["fruit", "fruit-bag.png"],
+  ];
+  const found = map.find(([key]) => q.includes(key));
+  return found ? `${base}${found[1]}` : "";
 }
 
 function fallbackImage(index = 1) {

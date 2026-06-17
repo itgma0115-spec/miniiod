@@ -474,6 +474,17 @@ h1 {
   background: #e9eef5;
 }
 
+.asset-credit {
+  margin: 18px 0 0;
+  text-align: center;
+  font-size: 12px;
+}
+
+.asset-credit a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
 .bottom-nav {
   position: fixed;
   left: 50%;
