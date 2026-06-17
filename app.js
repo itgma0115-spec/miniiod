@@ -1,4 +1,4 @@
-const state = {
+﻿const state = {
   lang: "mn",
   category: "fruits",
   alphaLang: "mn",
@@ -2050,6 +2050,11 @@ function deleteAudioClip(profile, text) {
   writeJson(audioStoreKey(profile), store);
 }
 
+function setVoiceStatus(message) {
+  const status = $("#voiceStatus");
+  if (status) status.textContent = message;
+}
+
 function getCustomAudio(text, profile = state.voiceProfile) {
   if (profile === "default") return "";
   const clip = getAudioStore(profile)[text];
@@ -2250,7 +2255,7 @@ function renderParentCenter() {
     const audio = getAudioStore(profile);
     panel.innerHTML = `
       <p class="parent-help">Бүх үг, үсэг, амьтан, жимс энд байна. Мөр бүр дээр бичих, сонсох, устгах товч харагдана.</p>
-      <p id="voiceStatus" class="voice-status">🎤 Бичих товч дарж 6 секунд хүртэл бичнэ. ▶️ Сонсох нь custom audio байхгүй үед default хоолой тоглуулна.</p>
+      <p id="voiceStatus" class="voice-status">Бичих товч дарж 6 секунд хүртэл бичнэ. Сонсох нь custom audio байхгүй үед default хоолой тоглуулна.</p>
       <div class="voice-owner">
         <button class="${profile === "mom" ? "active" : ""}" data-parent-owner="mom" type="button">👩 Ээжийн хоолой</button>
         <button class="${profile === "dad" ? "active" : ""}" data-parent-owner="dad" type="button">👨 Аавын хоолой</button>
@@ -2322,6 +2327,400 @@ async function startRecording(text) {
   setTimeout(() => {
     if (state.recording === recorder && recorder.state === "recording") recorder.stop();
   }, 6000);
+}
+
+function imageUrl(query, index = 1) {
+  const flag = countryFlagIcon(query);
+  if (flag) return flag;
+
+  const icons8 = icons8FruitIcon(query);
+  if (icons8) return icons8;
+
+  const number = numberImage(query, index);
+  if (number) return number;
+
+  const color = colorImage(query, index);
+  if (color) return color;
+
+  const shape = shapeImage(query, index);
+  if (shape) return shape;
+
+  const emoji = cartoonEmoji(query);
+  const palette = [
+    ["#fff3b0", "#ff8fab", "#5aa9e6"],
+    ["#d8f3dc", "#52b788", "#ffb703"],
+    ["#e0fbfc", "#3d5a80", "#ee6c4d"],
+    ["#fde2e4", "#f28482", "#84a59d"],
+    ["#fefae0", "#dda15e", "#606c38"],
+  ][index % 5];
+  const labelText = query.replace(/\bfruit\b|\banimal\b|\bfarm\b|\bafrican\b|\bvegetable\b/gi, "").trim().slice(0, 18);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520">
+      <rect width="640" height="520" rx="46" fill="${palette[0]}"/>
+      <circle cx="122" cy="118" r="72" fill="${palette[1]}" opacity=".42"/>
+      <circle cx="532" cy="94" r="58" fill="${palette[2]}" opacity=".35"/>
+      <circle cx="514" cy="404" r="92" fill="#ffffff" opacity=".52"/>
+      <ellipse cx="320" cy="404" rx="210" ry="42" fill="#233044" opacity=".10"/>
+      <text x="320" y="305" text-anchor="middle" font-size="212" font-family="Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif">${emoji}</text>
+      <text x="320" y="458" text-anchor="middle" font-size="34" font-weight="800" fill="#233044" font-family="Arial, sans-serif">${escapeSvg(labelText)}</text>
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function numberImage(query, index = 1) {
+  const match = query.toLowerCase().match(/number\s+(\d+)/);
+  if (!match) return "";
+  const number = match[1];
+  const colors = [
+    ["#e0fbfc", "#5aa9e6"],
+    ["#fff3b0", "#ff8fab"],
+    ["#d8f3dc", "#52b788"],
+    ["#fde2e4", "#f28482"],
+  ][index % 4];
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520">
+      <rect width="640" height="520" rx="46" fill="${colors[0]}"/>
+      <circle cx="126" cy="112" r="70" fill="#ffffff" opacity=".72"/>
+      <circle cx="520" cy="416" r="92" fill="#ffffff" opacity=".58"/>
+      <text x="320" y="340" text-anchor="middle" font-size="250" font-weight="900" fill="${colors[1]}" font-family="Arial, sans-serif">${number}</text>
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function colorImage(query, index = 1) {
+  const match = query.match(/#([0-9a-f]{6})/i);
+  if (!query.toLowerCase().includes("color") || !match) return "";
+  const hex = `#${match[1]}`;
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520">
+      <rect width="640" height="520" rx="46" fill="#fffaf0"/>
+      <circle cx="320" cy="250" r="150" fill="${hex}" stroke="#233044" stroke-width="12"/>
+      <circle cx="205" cy="138" r="42" fill="${hex}" opacity=".5"/>
+      <circle cx="468" cy="382" r="62" fill="${hex}" opacity=".35"/>
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function shapeImage(query, index = 1) {
+  const q = query.toLowerCase();
+  if (!q.includes("shape")) return "";
+  const fill = ["#5aa9e6", "#ef6f7b", "#5fb47a", "#f8d66d", "#8b5cf6"][index % 5];
+  const shape = q.replace("shape", "").trim();
+  const shapes = {
+    circle: `<circle cx="320" cy="260" r="138" fill="${fill}"/>`,
+    square: `<rect x="190" y="130" width="260" height="260" rx="18" fill="${fill}"/>`,
+    triangle: `<polygon points="320,112 470,390 170,390" fill="${fill}"/>`,
+    rectangle: `<rect x="150" y="165" width="340" height="190" rx="20" fill="${fill}"/>`,
+    star: `<polygon points="320,96 365,205 482,215 393,290 420,405 320,344 220,405 247,290 158,215 275,205" fill="${fill}"/>`,
+    heart: `<path d="M320 408C220 330 156 276 156 206c0-52 39-91 90-91 31 0 59 15 74 39 15-24 43-39 74-39 51 0 90 39 90 91 0 70-64 124-164 202z" fill="${fill}"/>`,
+    oval: `<ellipse cx="320" cy="260" rx="172" ry="116" fill="${fill}"/>`,
+    diamond: `<polygon points="320,90 490,260 320,430 150,260" fill="${fill}"/>`,
+    semicircle: `<path d="M160 330a160 160 0 0 1 320 0z" fill="${fill}"/>`,
+    pentagon: `<polygon points="320,90 486,210 424,410 216,410 154,210" fill="${fill}"/>`,
+    hexagon: `<polygon points="220,120 420,120 520,260 420,400 220,400 120,260" fill="${fill}"/>`,
+    arrow: `<polygon points="350,120 520,260 350,400 350,310 140,310 140,210 350,210" fill="${fill}"/>`,
+    cross: `<path d="M270 110h100v110h110v90H370v110H270V310H160v-90h110z" fill="${fill}"/>`,
+    crescent: `<path d="M380 110c-84 32-132 110-112 190 18 72 82 120 154 120-34 27-78 42-126 36-102-13-174-105-161-207 13-101 105-173 207-160 13 2 26 5 38 9z" fill="${fill}"/>`,
+    flower: `<g fill="${fill}"><circle cx="320" cy="260" r="58"/><circle cx="320" cy="135" r="70"/><circle cx="438" cy="220" r="70"/><circle cx="392" cy="355" r="70"/><circle cx="248" cy="355" r="70"/><circle cx="202" cy="220" r="70"/></g>`,
+    cloud: `<path d="M205 340c-48 0-85-35-85-78 0-41 34-74 77-78 18-58 73-98 138-98 74 0 136 51 149 119 48 9 84 48 84 95 0 55-48 40-108 40z" fill="${fill}"/>`,
+    wave: `<path d="M96 292c70-74 140-74 210 0s140 74 238 0v92c-98 74-168 74-238 0s-140-74-210 0z" fill="${fill}"/>`,
+    spiral: `<path d="M320 116c98 0 178 74 178 166 0 82-66 148-148 148-72 0-130-52-130-116 0-56 48-100 106-100 50 0 90 36 90 80 0 38-32 68-72 68-34 0-62-24-62-54 0-24 22-44 48-44" fill="none" stroke="${fill}" stroke-width="34" stroke-linecap="round"/>`,
+    dot: `<circle cx="320" cy="260" r="76" fill="${fill}"/>`,
+    line: `<rect x="120" y="235" width="400" height="50" rx="25" fill="${fill}"/>`,
+  };
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520">
+      <rect width="640" height="520" rx="46" fill="#fffaf0"/>
+      ${shapes[shape] || shapes.circle}
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function countryFlagIcon(query) {
+  const q = query.toLowerCase();
+  const map = [
+    ["united arab emirates", "ae"], ["united kingdom", "gb"], ["united states", "us"], ["south korea", "kr"], ["south africa", "za"],
+    ["dominican republic", "do"], ["new zealand", "nz"], ["saudi arabia", "sa"], ["sri lanka", "lk"], ["costa rica", "cr"],
+    ["mongolia", "mn"], ["china", "cn"], ["japan", "jp"], ["korea", "kr"], ["canada", "ca"],
+    ["france", "fr"], ["germany", "de"], ["italy", "it"], ["spain", "es"], ["russia", "ru"],
+    ["kazakhstan", "kz"], ["turkey", "tr"], ["india", "in"], ["australia", "au"], ["brazil", "br"],
+    ["argentina", "ar"], ["mexico", "mx"], ["egypt", "eg"], ["kenya", "ke"], ["thailand", "th"],
+    ["vietnam", "vn"], ["singapore", "sg"], ["malaysia", "my"], ["indonesia", "id"], ["sweden", "se"],
+    ["norway", "no"], ["finland", "fi"], ["denmark", "dk"], ["netherlands", "nl"], ["belgium", "be"],
+    ["switzerland", "ch"], ["austria", "at"], ["poland", "pl"], ["czechia", "cz"], ["hungary", "hu"],
+    ["romania", "ro"], ["greece", "gr"], ["portugal", "pt"], ["ireland", "ie"], ["iceland", "is"],
+    ["ukraine", "ua"], ["belarus", "by"], ["uzbekistan", "uz"], ["kyrgyzstan", "kg"], ["tajikistan", "tj"],
+    ["turkmenistan", "tm"], ["pakistan", "pk"], ["bangladesh", "bd"], ["nepal", "np"], ["bhutan", "bt"],
+    ["philippines", "ph"], ["cambodia", "kh"], ["laos", "la"], ["myanmar", "mm"], ["brunei", "bn"],
+    ["qatar", "qa"], ["kuwait", "kw"], ["israel", "il"], ["iran", "ir"], ["iraq", "iq"],
+    ["jordan", "jo"], ["lebanon", "lb"], ["morocco", "ma"], ["algeria", "dz"], ["tunisia", "tn"],
+    ["ethiopia", "et"], ["nigeria", "ng"], ["ghana", "gh"], ["tanzania", "tz"], ["uganda", "ug"],
+    ["zimbabwe", "zw"], ["chile", "cl"], ["peru", "pe"], ["colombia", "co"], ["venezuela", "ve"],
+    ["uruguay", "uy"], ["paraguay", "py"], ["bolivia", "bo"], ["cuba", "cu"], ["jamaica", "jm"],
+    ["panama", "pa"], ["georgia", "ge"], ["armenia", "am"], ["azerbaijan", "az"], ["croatia", "hr"],
+    ["latvia", "lv"], ["lithuania", "lt"], ["estonia", "ee"], ["serbia", "rs"], ["slovenia", "si"],
+  ];
+  const found = map.find(([name]) => q.includes(name));
+  return found ? `https://flagcdn.com/${found[1]}.svg` : "";
+}
+
+function icons8FruitIcon(query) {
+  const q = query.toLowerCase();
+  const base = "https://img.icons8.com/color/240/";
+  const map = [
+    ["red apple", "apple.png"],
+    ["apple", "apple.png"],
+    ["banana", "banana.png"],
+    ["orange", "orange.png"],
+    ["grapes", "grapes.png"],
+    ["grape", "grapes.png"],
+    ["strawberry", "strawberry.png"],
+    ["watermelon", "watermelon.png"],
+    ["pear", "pear.png"],
+    ["peach", "peach.png"],
+    ["cherry", "cherry.png"],
+    ["pineapple", "pineapple.png"],
+    ["mango", "mango.png"],
+    ["kiwi", "kiwi.png"],
+    ["lemon", "lemon.png"],
+    ["pomegranate", "pomegranate.png"],
+    ["plum", "plum.png"],
+    ["guava", "guava.png"],
+    ["avocado", "avocado.png"],
+    ["coconut", "coconut.png"],
+    ["raspberry", "raspberry.png"],
+    ["blueberry", "blueberry.png"],
+    ["melon", "melon.png"],
+    ["apricot", "apricot.png"],
+    ["lime", "lime.png"],
+    ["grapefruit", "grapefruit.png"],
+    ["dragon fruit", "dragon-fruit.png"],
+    ["fig", "fig.png"],
+    ["date", "date-fruit.png"],
+    ["persimmon", "persimmon.png"],
+    ["blackcurrant", "currant.png"],
+    ["redcurrant", "currant.png"],
+    ["lingonberry", "berries.png"],
+    ["buckthorn", "berries.png"],
+    ["bird cherry", "cherry.png"],
+    ["hawthorn", "berries.png"],
+    ["rosehip", "berries.png"],
+    ["berry", "berries.png"],
+    ["fruit", "fruit-bag.png"],
+  ];
+  const found = map.find(([key]) => q.includes(key));
+  return found ? `${base}${found[1]}` : "";
+}
+
+function fallbackImage(index = 1) {
+  return imageUrl("star", index);
+}
+
+function escapeSvg(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[char]));
+}
+
+function cartoonEmoji(query) {
+  const q = query.toLowerCase();
+  const map = [
+    ["lingonberry", "🫐"], ["buckthorn", "🍊"], ["blackcurrant", "🫐"], ["redcurrant", "🍒"], ["bird cherry", "🍒"],
+    ["hawthorn", "🍒"], ["rosehip", "🍒"], ["apricot", "🍑"], ["raspberry", "🍓"],
+    ["apple", "🍎"], ["banana", "🍌"], ["orange", "🍊"], ["grape", "🍇"], ["strawberry", "🍓"],
+    ["watermelon", "🍉"], ["pear", "🍐"], ["peach", "🍑"], ["cherry", "🍒"], ["pineapple", "🍍"],
+    ["mango", "🥭"], ["kiwi", "🥝"], ["lemon", "🍋"], ["pomegranate", "🍎"], ["plum", "🍑"],
+    ["coconut", "🥥"], ["blueberry", "🫐"], ["melon", "🍈"], ["carrot", "🥕"], ["cucumber", "🥒"],
+    ["corn", "🌽"], ["onion", "🧅"], ["pumpkin", "🎃"], ["tomato", "🍅"], ["vegetable", "🥦"],
+    ["bear", "🐻"], ["fox", "🦊"], ["deer", "🦌"], ["wolf", "🐺"], ["rabbit", "🐰"],
+    ["squirrel", "🐿️"], ["cow", "🐮"], ["horse", "🐴"], ["sheep", "🐑"], ["goat", "🐐"],
+    ["pig", "🐷"], ["chicken", "🐥"], ["lion", "🦁"], ["elephant", "🐘"], ["giraffe", "🦒"],
+    ["zebra", "🦓"], ["monkey", "🐵"], ["crocodile", "🐊"], ["tiger", "🐯"], ["leopard", "🐆"],
+    ["rhino", "🦏"], ["hippo", "🦛"], ["camel", "🐫"], ["dog", "🐶"], ["cat", "🐱"],
+    ["duck", "🦆"], ["goose", "🪿"], ["owl", "🦉"], ["eagle", "🦅"], ["penguin", "🐧"],
+    ["fish", "🐟"], ["bird", "🐦"], ["butterfly", "🦋"], ["turtle", "🐢"], ["panda", "🐼"],
+    ["fire truck", "🚒"], ["ambulance", "🚑"], ["police car", "🚓"], ["school bus", "🚌"], ["sports car", "🏎️"],
+    ["electric car", "🚙"], ["minibus", "🚐"], ["motorcycle", "🏍️"], ["bicycle", "🚲"], ["scooter", "🛵"],
+    ["excavator", "🚜"], ["crane", "🏗️"], ["helicopter", "🚁"], ["rocket", "🚀"], ["metro", "🚇"],
+    ["tram", "🚋"], ["taxi", "🚕"], ["truck", "🚚"], ["tractor", "🚜"], ["bus", "🚌"],
+    ["ship", "🚢"], ["boat", "⛵"], ["balloon", "🎈"], ["snowmobile", "🛷"], ["trailer", "🚚"],
+    ["jeep", "🚙"], ["cart", "🛒"], ["vehicle", "🚗"], ["ball", "⚽"], ["car", "🚗"], ["train", "🚂"], ["airplane", "✈️"],
+    ["head", "🙂"], ["hair", "💇"], ["eye", "👁️"], ["ear", "👂"], ["nose", "👃"], ["mouth", "👄"], ["tooth", "🦷"], ["tongue", "👅"],
+    ["neck", "🙂"], ["shoulder", "💪"], ["arm", "💪"], ["hand", "✋"], ["finger", "☝️"], ["chest", "🧍"], ["belly", "🧍"], ["back", "🧍"],
+    ["leg", "🦵"], ["knee", "🦵"], ["foot", "🦶"], ["toe", "🦶"], ["brain", "🧠"], ["lips", "👄"], ["cheek", "🙂"], ["chin", "🙂"],
+    ["forehead", "🙂"], ["eyelash", "👁️"], ["eyebrow", "🙂"], ["wrist", "✋"], ["ankle", "🦶"],
+    ["bread", "🍞"], ["milk", "🥛"], ["egg", "🥚"], ["cheese", "🧀"], ["rice", "🍚"], ["noodles", "🍜"], ["soup", "🍲"], ["dumpling", "🥟"],
+    ["pastry", "🥟"], ["pizza", "🍕"], ["burger", "🍔"], ["salad", "🥗"], ["potato", "🥔"], ["tomato", "🍅"], ["chicken", "🍗"], ["meat", "🥩"],
+    ["yogurt", "🥛"], ["ice cream", "🍦"], ["cookie", "🍪"], ["cake", "🍰"], ["chocolate", "🍫"], ["honey", "🍯"], ["tea", "🍵"], ["juice", "🧃"],
+    ["father", "👨"], ["mother", "👩"], ["brother", "👦"], ["sister", "👧"], ["sibling", "🧒"], ["grandfather", "👴"], ["grandmother", "👵"],
+    ["son", "👦"], ["daughter", "👧"], ["friend", "🧒"], ["teacher", "🧑‍🏫"], ["doctor", "🧑‍⚕️"], ["uncle", "👨"], ["aunt", "👩"], ["cousin", "🧒"],
+    ["baby", "👶"], ["twins", "👯"], ["family", "👨‍👩‍👧"],
+    ["mongolia", "🇲🇳"], ["china", "🇨🇳"], ["japan", "🇯🇵"], ["korea", "🇰🇷"], ["united states", "🇺🇸"],
+    ["canada", "🇨🇦"], ["united kingdom", "🇬🇧"], ["france", "🇫🇷"], ["germany", "🇩🇪"], ["italy", "🇮🇹"],
+    ["spain", "🇪🇸"], ["russia", "🇷🇺"], ["kazakhstan", "🇰🇿"], ["turkey", "🇹🇷"], ["india", "🇮🇳"],
+    ["australia", "🇦🇺"], ["brazil", "🇧🇷"], ["argentina", "🇦🇷"], ["mexico", "🇲🇽"], ["egypt", "🇪🇬"],
+    ["south africa", "🇿🇦"], ["kenya", "🇰🇪"], ["thailand", "🇹🇭"], ["vietnam", "🇻🇳"], ["singapore", "🇸🇬"],
+    ["malaysia", "🇲🇾"], ["indonesia", "🇮🇩"], ["new zealand", "🇳🇿"], ["sweden", "🇸🇪"], ["norway", "🇳🇴"],
+    ["flag", "🏳️"],
+    ["sun", "☀️"], ["moon", "🌙"], ["star", "⭐"], ["flower", "🌸"], ["book", "📘"],
+    ["robot", "🤖"], ["rocket", "🚀"], ["house", "🏠"], ["water", "💧"], ["cloud", "☁️"],
+    ["yellow", "🟡"], ["pink", "🌸"], ["number", "🔢"], ["letter", "🔤"],
+  ];
+  const found = map.find(([key]) => q.includes(key));
+  return found ? found[1] : "⭐";
+}
+
+function label(item) {
+  return state.lang === "mn" ? item[0] : item[1];
+}
+
+function audioSlug(text) {
+  return `mn-${Array.from(text).map((char) => char.codePointAt(0).toString(16)).join("-")}.mp3`;
+}
+
+function speak(text, lang = state.lang) {
+  if (playCustomAudio(text)) return;
+  if (lang === "mn") {
+    const audio = new Audio(`assets/audio/mn/${audioSlug(text)}`);
+    audio.play().catch(() => speakWithBrowser(text, lang));
+    return;
+  }
+  speakWithBrowser(text, lang);
+}
+
+function speakWithBrowser(text, lang = state.lang) {
+  playNotes(["C5"], 0.08);
+  if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  const requestedLang = lang === "mn" ? "mn" : "en";
+  utterance.rate = 0.78;
+  utterance.pitch = 1.08;
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find((voice, index) => voice.lang.toLowerCase().startsWith(requestedLang) && index % 2 === state.progress % 2);
+  const fallback = voices.find((voice) => voice.lang.toLowerCase().startsWith("en")) || voices[0];
+  const selectedVoice = preferred || fallback;
+
+  utterance.lang = selectedVoice ? selectedVoice.lang : (lang === "mn" ? "mn-MN" : "en-US");
+  if (selectedVoice) utterance.voice = selectedVoice;
+  utterance.onerror = () => playNotes(["C5", "G5"], 0.12);
+  window.speechSynthesis.speak(utterance);
+}
+
+function playCharacterGreeting(character) {
+  playNotes(["C5", "E5"], 0.1);
+  const phrase = state.lang === "mn" ? "\u0421\u0430\u0439\u043d \u0443\u0443, \u041e\u0434\u043a\u043e!" : "Hello, Odko!";
+  if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(phrase);
+  utterance.lang = state.lang === "mn" ? "mn-MN" : "en-US";
+  utterance.pitch = character.pitch;
+  utterance.rate = character.rate;
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find((voice) => voice.lang.toLowerCase().startsWith(state.lang === "mn" ? "mn" : "en"));
+  if (preferred) utterance.voice = preferred;
+  window.speechSynthesis.speak(utterance);
+}
+
+function celebrate() {
+  speak(state.lang === "mn" ? "Мундаг байна, миний од!" : "Great job, my star!", state.lang);
+  playNotes(["C5", "E5", "G5", "C6"], 0.14);
+  setTimeout(playApplause, 260);
+}
+
+function saveProgress() {
+  state.progress += 1;
+  trackStat("words", 1);
+  localStorage.setItem("miniiOdProgress", String(state.progress));
+  $("#progressText").textContent = state.lang === "mn" ? `${state.progress} үг` : `${state.progress} words`;
+}
+
+function renderCategories() {
+  $("#categoryTabs").innerHTML = categories.map((cat) => (
+    `<button class="pill ${cat.id === state.category ? "active" : ""}" data-category="${cat.id}" type="button">${state.lang === "mn" ? cat.mn : cat.en}</button>`
+  )).join("");
+}
+
+function renderWords() {
+  renderCategories();
+  $("#wordGrid").innerHTML = words[state.category].map((item, index) => `
+    <button class="word-card" data-word-index="${index}" type="button">
+      <img alt="${label(item)}" src="${imageUrl(item[2], index + 1)}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackImage(index + 1)}';" />
+      <strong>${label(item)}</strong>
+      <span>${state.lang === "mn" ? item[1] : item[0]}</span>
+    </button>
+  `).join("");
+}
+
+function renderSongs() {
+  $("#songList").innerHTML = characterGreetings.map((character, index) =>     '<button class="song-card character-card" data-character="' + index + '" type="button" style="--character-a:' + character.colors[0] + ';--character-b:' + character.colors[1] + ';">' +
+      '<span class="character-avatar" aria-hidden="true">' + character.icon + '</span>' +
+      '<span><strong>' + character.name + '</strong><small>' + character.role + '</small></span>' +
+      '<span class="play-dot" aria-label="Play greeting">?</span>' +
+    '</button>'
+  ).join("");
+}
+
+function noteFrequency(note) {
+  const notes = { C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392, A4: 440, B4: 493.88, C5: 523.25, E5: 659.25, G5: 783.99, C6: 1046.5 };
+  return notes[note] || 440;
+}
+
+function playNotes(notes, duration = 0.28) {
+  const audio = new (window.AudioContext || window.webkitAudioContext)();
+  if (audio.state === "suspended") audio.resume();
+  notes.forEach((note, index) => {
+    const osc = audio.createOscillator();
+    const gain = audio.createGain();
+    osc.frequency.value = noteFrequency(note);
+    osc.type = "sine";
+    gain.gain.setValueAtTime(0.0001, audio.currentTime + index * duration);
+    gain.gain.exponentialRampToValueAtTime(0.18, audio.currentTime + index * duration + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + (index + 0.88) * duration);
+    osc.connect(gain).connect(audio.destination);
+    osc.start(audio.currentTime + index * duration);
+    osc.stop(audio.currentTime + (index + 0.95) * duration);
+  });
+}
+
+function playApplause() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  const audio = new AudioContext();
+  if (audio.state === "suspended") audio.resume();
+
+  for (let burst = 0; burst < 12; burst += 1) {
+    const start = audio.currentTime + burst * 0.055;
+    const buffer = audio.createBuffer(1, audio.sampleRate * 0.08, audio.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i += 1) {
+      data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    }
+
+    const noise = audio.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = audio.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.value = 1200 + Math.random() * 900;
+    filter.Q.value = 0.9;
+
+    const gain = audio.createGain();
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.18, start + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.07);
+
+    noise.connect(filter).connect(gain).connect(audio.destination);
+    noise.start(start);
+    noise.stop(start + 0.08);
+  }
 }
 
 function renderAlphabet() {
@@ -2445,7 +2844,7 @@ document.addEventListener("click", (event) => {
     if (clip) {
       new Audio(clip.dataUrl).play().catch(() => speak(text, "mn"));
     } else {
-      setVoiceStatus(`▶️ "${text}" custom audio байхгүй тул default хоолой тоглуулж байна.`);
+      setVoiceStatus(`"${text}" custom audio байхгүй тул default хоолой тоглуулж байна.`);
       speak(text, "mn");
     }
     return;
@@ -2564,7 +2963,10 @@ function updateIosInstallTip() {
   $("#iosInstallTip").hidden = !(isIos && !isStandalone);
 }
 
-window.speechSynthesis.onvoiceschanged = () => {};
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged = () => {};
+}
+installParentModeUi();
 updateIosInstallTip();
 refreshLanguage();
 renderAlphabet();
