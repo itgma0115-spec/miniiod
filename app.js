@@ -2085,58 +2085,64 @@ function setVoiceProfile(profile) {
 }
 
 function installParentModeUi() {
-  document.body.insertAdjacentHTML("beforeend", `
-    <section id="roleGate" class="mode-gate" aria-modal="true" role="dialog">
-      <div class="mode-card">
-        <p class="eyebrow">Миний Од</p>
-        <h2>Хэн ашиглах вэ?</h2>
-        <div class="role-grid">
-          <button data-role-choice="mom" type="button"><span>👩</span>Ээж</button>
-          <button data-role-choice="dad" type="button"><span>👨</span>Аав</button>
-          <button data-role-choice="child" type="button"><span>⭐</span>Хүүхэд</button>
-        </div>
-        <div id="pinBox" class="pin-box" hidden>
-          <strong id="pinTitle">PIN</strong>
-          <input id="pinInput" inputmode="numeric" maxlength="4" pattern="[0-9]*" type="password" placeholder="0000" />
-          <button id="pinSubmit" class="primary-btn" type="button">Орох</button>
-          <p id="pinMessage"></p>
-        </div>
-      </div>
-    </section>
-
-    <section id="parentCenter" class="parent-center" hidden>
-      <div class="parent-sheet">
-        <header>
-          <div>
-            <p class="eyebrow">Parent Center</p>
-            <h2 id="parentCenterTitle">Эцэг эхийн төв</h2>
+  if (!$("#roleGate")) {
+    document.body.insertAdjacentHTML("beforeend", `
+      <section id="roleGate" class="mode-gate" aria-modal="true" role="dialog">
+        <div class="mode-card">
+          <p class="eyebrow">Minii Od</p>
+          <h2>??? ??????? ???</h2>
+          <div class="role-grid">
+            <button data-role-choice="mom" type="button"><span>??</span>???</button>
+            <button data-role-choice="dad" type="button"><span>??</span>???</button>
+            <button data-role-choice="child" type="button"><span>?</span>??????</button>
           </div>
-          <button id="closeParentCenter" class="mini-icon" type="button" aria-label="Close">×</button>
-        </header>
-        <div class="parent-tabs">
-          <button class="parent-tab active" data-parent-tab="report" type="button">📊 Тайлан</button>
-          <button class="parent-tab" data-parent-tab="voice" type="button">🎙️ Дуу хоолой</button>
-          <button class="parent-tab" data-parent-tab="settings" type="button">⚙️ Тохиргоо</button>
+          <div id="pinBox" class="pin-box" hidden>
+            <strong id="pinTitle">PIN</strong>
+            <input id="pinInput" inputmode="numeric" maxlength="4" pattern="[0-9]*" type="password" placeholder="0000" />
+            <button id="pinSubmit" class="primary-btn" type="button">????</button>
+            <p id="pinMessage"></p>
+          </div>
         </div>
-        <div id="parentPanel"></div>
-      </div>
-    </section>
-  `);
+      </section>`);
+  }
 
-  document.querySelector(".hero-card").insertAdjacentHTML("afterend", `
-    <section class="voice-choice child-safe">
-      <p>Дуу хоолой</p>
-      <div>
-        <button data-voice-profile="mom" type="button">Ээж</button>
-        <button data-voice-profile="dad" type="button">Аав</button>
-        <button data-voice-profile="default" type="button">Default</button>
-      </div>
-    </section>
-    <section id="parentToolbar" class="parent-toolbar" hidden>
-      <button id="openParentCenter" class="primary-btn" type="button">Parent Center</button>
-      <button id="switchMode" class="install-btn" type="button">Горим солих</button>
-    </section>
-  `);
+  if (!$("#parentCenter")) {
+    document.body.insertAdjacentHTML("beforeend", `
+      <section id="parentCenter" class="parent-center" hidden>
+        <div class="parent-sheet">
+          <header>
+            <div>
+              <p class="eyebrow">Parent Center</p>
+              <h2 id="parentCenterTitle">???? ????? ???</h2>
+            </div>
+            <button id="closeParentCenter" class="mini-icon" type="button" aria-label="Close">?</button>
+          </header>
+          <div class="parent-tabs">
+            <button class="parent-tab active" data-parent-tab="report" type="button">?? ??????</button>
+            <button class="parent-tab" data-parent-tab="voice" type="button">??? ??? ??????</button>
+            <button class="parent-tab" data-parent-tab="settings" type="button">?? ????????</button>
+          </div>
+          <div id="parentPanel"></div>
+        </div>
+      </section>`);
+  }
+
+  if (!$("#parentToolbar")) {
+    document.querySelector(".hero-card").insertAdjacentHTML("afterend", `
+      <section class="voice-choice child-safe">
+        <p>??? ??????</p>
+        <div>
+          <button data-voice-profile="mom" type="button">???</button>
+          <button data-voice-profile="dad" type="button">???</button>
+          <button data-voice-profile="default" type="button">Default</button>
+        </div>
+      </section>
+      <section id="parentToolbar" class="parent-toolbar" hidden>
+        <button id="openParentCenter" class="primary-btn" type="button">Parent Center</button>
+        <button id="switchMode" class="install-btn" type="button">????? ?????</button>
+      </section>
+    `);
+  }
   setVoiceProfile(state.voiceProfile);
   renderParentCenter();
 }

@@ -1,9 +1,9 @@
-const CACHE_NAME = "minii-od-v8";
+const CACHE_NAME = "minii-od-v9";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
-  "./app.js?v=parent-mode-0d501ed",
+  "./app.js?v=parent-gate-589f37f",
   "./manifest.webmanifest",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",

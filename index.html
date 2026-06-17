@@ -13,6 +13,42 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <section id="roleGate" class="mode-gate" aria-modal="true" role="dialog">
+      <div class="mode-card">
+        <p class="eyebrow">Minii Od</p>
+        <h2>&#1061;&#1101;&#1085; &#1072;&#1096;&#1080;&#1075;&#1083;&#1072;&#1093; &#1074;&#1101;?</h2>
+        <div class="role-grid">
+          <button data-role-choice="mom" type="button"><span>&#128105;</span>&#1069;&#1101;&#1078;</button>
+          <button data-role-choice="dad" type="button"><span>&#128104;</span>&#1040;&#1072;&#1074;</button>
+          <button data-role-choice="child" type="button"><span>&#11088;</span>&#1061;&#1199;&#1199;&#1093;&#1101;&#1076;</button>
+        </div>
+        <div id="pinBox" class="pin-box" hidden>
+          <strong id="pinTitle">PIN</strong>
+          <input id="pinInput" inputmode="numeric" maxlength="4" pattern="[0-9]*" type="password" placeholder="0000" />
+          <button id="pinSubmit" class="primary-btn" type="button">&#1054;&#1088;&#1086;&#1093;</button>
+          <p id="pinMessage"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="parentCenter" class="parent-center" hidden>
+      <div class="parent-sheet">
+        <header>
+          <div>
+            <p class="eyebrow">Parent Center</p>
+            <h2 id="parentCenterTitle">&#1069;&#1094;&#1101;&#1075; &#1101;&#1093;&#1080;&#1081;&#1085; &#1090;&#1257;&#1074;</h2>
+          </div>
+          <button id="closeParentCenter" class="mini-icon" type="button" aria-label="Close">&times;</button>
+        </header>
+        <div class="parent-tabs">
+          <button class="parent-tab active" data-parent-tab="report" type="button">&#128202; &#1058;&#1072;&#1081;&#1083;&#1072;&#1085;</button>
+          <button class="parent-tab" data-parent-tab="voice" type="button">&#127897;&#65039; &#1044;&#1091;&#1091; &#1093;&#1086;&#1086;&#1083;&#1086;&#1081;</button>
+          <button class="parent-tab" data-parent-tab="settings" type="button">&#9881;&#65039; &#1058;&#1086;&#1093;&#1080;&#1088;&#1075;&#1086;&#1086;</button>
+        </div>
+        <div id="parentPanel"></div>
+      </div>
+    </section>
+
     <main class="app-shell" aria-label="Миний Од хүүхдийн сургалтын апп">
       <header class="topbar">
         <div>
@@ -112,7 +148,7 @@
         <button class="nav-btn" data-target="alphabet" type="button"><span>A</span>Үсэг</button>
       </nav>
     </main>
-    <script src="app.js?v=parent-mode-0d501ed"></script>
+    <script src="app.js?v=parent-gate-589f37f"></script>
     <script>
       if ("serviceWorker" in navigator && location.protocol !== "file:") {
         window.addEventListener("load", () => {
