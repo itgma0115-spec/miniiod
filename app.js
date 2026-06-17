@@ -2210,6 +2210,14 @@ function enterApp(role) {
   document.body.classList.toggle("parent-mode", isParent);
   document.body.classList.toggle("child-mode", !isParent);
   setVoiceProfile(state.voiceProfile);
+  if (isParent) {
+    state.parentTab = "report";
+    syncUsageMinutes();
+    $("#parentCenter").hidden = false;
+    renderParentCenter();
+  } else {
+    $("#parentCenter").hidden = true;
+  }
 }
 
 function renderParentCenter() {
@@ -2226,6 +2234,7 @@ function renderParentCenter() {
       return `<div class="week-bar"><span>${short}</span><strong style="height:${Math.max(12, Math.min(100, (day.words + day.songs + day.correct) * 8))}%"></strong></div>`;
     }).join("");
     panel.innerHTML = `
+      <p class="parent-help">Parent Center: тайлан, дуу хоолой, тохиргоо энд харагдана.</p>
       <div class="report-grid">
         <article><span>Өнөөдөр сурсан үг</span><strong>${today.words || 0}</strong></article>
         <article><span>Сонссон дуу</span><strong>${today.songs || 0}</strong></article>
@@ -2240,6 +2249,7 @@ function renderParentCenter() {
     const profile = state.parentRole || "mom";
     const audio = getAudioStore(profile);
     panel.innerHTML = `
+      <p class="parent-help">Бүх үг, үсэг, амьтан, жимс энд байна. Мөр бүр дээр бичих, сонсох, устгах товч харагдана.</p>
       <div class="voice-owner">
         <button class="${profile === "mom" ? "active" : ""}" data-parent-owner="mom" type="button">👩 Ээжийн хоолой</button>
         <button class="${profile === "dad" ? "active" : ""}" data-parent-owner="dad" type="button">👨 Аавын хоолой</button>
@@ -2259,6 +2269,7 @@ function renderParentCenter() {
   }
   panel.innerHTML = `
     <div class="settings-panel">
+      <p class="parent-help">Хүүхдийн горимд ашиглах хоолойг сонгоно.</p>
       <label>Хүүхдийн сонсох хоолой</label>
       <div class="settings-voices">
         <button data-voice-profile="mom" type="button">Ээжийн хоолой</button>

@@ -332,6 +332,25 @@ h1 {
   grid-template-columns: 1fr auto;
 }
 
+.parent-mode .parent-toolbar {
+  display: grid;
+}
+
+.child-mode .parent-toolbar,
+.child-mode .parent-center {
+  display: none !important;
+}
+
+.parent-help {
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff7d6;
+  border: 1px solid #efd179;
+  color: var(--ink);
+  font-weight: 800;
+}
+
 .parent-sheet header {
   display: flex;
   justify-content: space-between;
