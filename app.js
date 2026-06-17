@@ -6,7 +6,13 @@ const state = {
   letterStep: {},
   currentLetterText: "",
   gameAnswer: null,
-};
+  role: "",
+  parentRole: "",
+  voiceProfile: localStorage.getItem("miniiOdVoiceProfile") || "default",
+  parentTab: "report",
+  recording: null,
+  recordTarget: "",
+  };
 
 const categories = [
   {
@@ -1969,6 +1975,328 @@ const characterGreetings = [
 
 const $ = (selector) => document.querySelector(selector);
 let deferredInstallPrompt = null;
+const DAY_MS = 86400000;
+const appStartedAt = Date.now();
+
+function todayKey(offset = 0) {
+  const date = new Date(Date.now() + offset * DAY_MS);
+  return date.toISOString().slice(0, 10);
+}
+
+function readJson(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "null") ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeJson(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function defaultStats() {
+  return {
+    days: {},
+    startedAt: todayKey(),
+  };
+}
+
+function getStats() {
+  const stats = readJson("miniiOdStats", defaultStats());
+  if (!stats.days) stats.days = {};
+  return stats;
+}
+
+function getTodayStats(stats = getStats()) {
+  const key = todayKey();
+  stats.days[key] = stats.days[key] || { words: 0, songs: 0, minutes: 0, correct: 0, wrong: 0 };
+  return stats.days[key];
+}
+
+function trackStat(name, amount = 1) {
+  const stats = getStats();
+  const today = getTodayStats(stats);
+  today[name] = (today[name] || 0) + amount;
+  writeJson("miniiOdStats", stats);
+  renderParentCenter();
+}
+
+function syncUsageMinutes() {
+  const minutes = Math.max(1, Math.floor((Date.now() - appStartedAt) / 60000));
+  const stats = getStats();
+  const today = getTodayStats(stats);
+  today.minutes = Math.max(today.minutes || 0, minutes);
+  writeJson("miniiOdStats", stats);
+}
+
+function audioStoreKey(profile = state.voiceProfile) {
+  return `miniiOdAudio_${profile}`;
+}
+
+function getAudioStore(profile = state.voiceProfile) {
+  return readJson(audioStoreKey(profile), {});
+}
+
+function saveAudioClip(profile, text, dataUrl) {
+  const store = getAudioStore(profile);
+  store[text] = { dataUrl, savedAt: Date.now() };
+  writeJson(audioStoreKey(profile), store);
+}
+
+function deleteAudioClip(profile, text) {
+  const store = getAudioStore(profile);
+  delete store[text];
+  writeJson(audioStoreKey(profile), store);
+}
+
+function getCustomAudio(text, profile = state.voiceProfile) {
+  if (profile === "default") return "";
+  const clip = getAudioStore(profile)[text];
+  return clip ? clip.dataUrl : "";
+}
+
+function playCustomAudio(text) {
+  const dataUrl = getCustomAudio(text);
+  if (!dataUrl) return false;
+  const audio = new Audio(dataUrl);
+  audio.play().catch(() => speakWithBrowser(text, state.lang));
+  return true;
+}
+
+function allVoiceItems() {
+  const wordItems = Object.values(words).flat().map((item) => ({ text: item[0], hint: item[1], group: "Үг" }));
+  const letterItems = Object.entries(mnExamples).flatMap(([letter, examples]) => (
+    examples.map((item) => ({ text: item[0], hint: `${letter} үсэг`, group: "Үсэг" }))
+  ));
+  const unique = new Map();
+  [...wordItems, ...letterItems].forEach((item) => {
+    if (!unique.has(item.text)) unique.set(item.text, item);
+  });
+  return [...unique.values()];
+}
+
+function setVoiceProfile(profile) {
+  state.voiceProfile = profile;
+  localStorage.setItem("miniiOdVoiceProfile", profile);
+  document.querySelectorAll("[data-voice-profile]").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.voiceProfile === profile);
+  });
+}
+
+function installParentModeUi() {
+  document.body.insertAdjacentHTML("beforeend", `
+    <section id="roleGate" class="mode-gate" aria-modal="true" role="dialog">
+      <div class="mode-card">
+        <p class="eyebrow">Миний Од</p>
+        <h2>Хэн ашиглах вэ?</h2>
+        <div class="role-grid">
+          <button data-role-choice="mom" type="button"><span>👩</span>Ээж</button>
+          <button data-role-choice="dad" type="button"><span>👨</span>Аав</button>
+          <button data-role-choice="child" type="button"><span>⭐</span>Хүүхэд</button>
+        </div>
+        <div id="pinBox" class="pin-box" hidden>
+          <strong id="pinTitle">PIN</strong>
+          <input id="pinInput" inputmode="numeric" maxlength="4" pattern="[0-9]*" type="password" placeholder="0000" />
+          <button id="pinSubmit" class="primary-btn" type="button">Орох</button>
+          <p id="pinMessage"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="parentCenter" class="parent-center" hidden>
+      <div class="parent-sheet">
+        <header>
+          <div>
+            <p class="eyebrow">Parent Center</p>
+            <h2 id="parentCenterTitle">Эцэг эхийн төв</h2>
+          </div>
+          <button id="closeParentCenter" class="mini-icon" type="button" aria-label="Close">×</button>
+        </header>
+        <div class="parent-tabs">
+          <button class="parent-tab active" data-parent-tab="report" type="button">📊 Тайлан</button>
+          <button class="parent-tab" data-parent-tab="voice" type="button">🎙️ Дуу хоолой</button>
+          <button class="parent-tab" data-parent-tab="settings" type="button">⚙️ Тохиргоо</button>
+        </div>
+        <div id="parentPanel"></div>
+      </div>
+    </section>
+  `);
+
+  document.querySelector(".hero-card").insertAdjacentHTML("afterend", `
+    <section class="voice-choice child-safe">
+      <p>Дуу хоолой</p>
+      <div>
+        <button data-voice-profile="mom" type="button">Ээж</button>
+        <button data-voice-profile="dad" type="button">Аав</button>
+        <button data-voice-profile="default" type="button">Default</button>
+      </div>
+    </section>
+    <section id="parentToolbar" class="parent-toolbar" hidden>
+      <button id="openParentCenter" class="primary-btn" type="button">Parent Center</button>
+      <button id="switchMode" class="install-btn" type="button">Горим солих</button>
+    </section>
+  `);
+  setVoiceProfile(state.voiceProfile);
+  renderParentCenter();
+}
+
+function parentPinKey(role) {
+  return `miniiOdPin_${role}`;
+}
+
+function showPin(role) {
+  state.parentRole = role;
+  const pin = localStorage.getItem(parentPinKey(role));
+  const lockUntil = Number(localStorage.getItem(`miniiOdPinLock_${role}`) || 0);
+  const pinBox = $("#pinBox");
+  pinBox.hidden = false;
+  $("#pinInput").value = "";
+  $("#pinTitle").textContent = pin ? "4 оронтой PIN оруулна уу" : "Шинэ 4 оронтой PIN үүсгэнэ үү";
+  if (Date.now() < lockUntil) {
+    const seconds = Math.ceil((lockUntil - Date.now()) / 1000);
+    $("#pinMessage").textContent = `${seconds} секунд хүлээнэ үү.`;
+    $("#pinSubmit").disabled = true;
+    setTimeout(() => showPin(role), Math.min(seconds * 1000, 30000));
+  } else {
+    $("#pinMessage").textContent = "";
+    $("#pinSubmit").disabled = false;
+  }
+}
+
+function submitPin() {
+  const role = state.parentRole;
+  const value = $("#pinInput").value.trim();
+  if (!/^\d{4}$/.test(value)) {
+    $("#pinMessage").textContent = "4 тоо оруулна уу.";
+    return;
+  }
+  const key = parentPinKey(role);
+  const existing = localStorage.getItem(key);
+  if (!existing) {
+    localStorage.setItem(key, value);
+    localStorage.removeItem(`miniiOdPinFails_${role}`);
+    enterApp(role);
+    return;
+  }
+  if (existing === value) {
+    localStorage.removeItem(`miniiOdPinFails_${role}`);
+    enterApp(role);
+    return;
+  }
+  const failKey = `miniiOdPinFails_${role}`;
+  const fails = Number(localStorage.getItem(failKey) || 0) + 1;
+  localStorage.setItem(failKey, String(fails));
+  if (fails >= 3) {
+    localStorage.setItem(`miniiOdPinLock_${role}`, String(Date.now() + 30000));
+    localStorage.setItem(failKey, "0");
+    showPin(role);
+  } else {
+    $("#pinMessage").textContent = `PIN буруу. Үлдсэн оролдлого: ${3 - fails}`;
+  }
+}
+
+function enterApp(role) {
+  state.role = role;
+  $("#roleGate").hidden = true;
+  const isParent = role === "mom" || role === "dad";
+  $("#parentToolbar").hidden = !isParent;
+  document.body.classList.toggle("parent-mode", isParent);
+  document.body.classList.toggle("child-mode", !isParent);
+  setVoiceProfile(state.voiceProfile);
+}
+
+function renderParentCenter() {
+  const panel = $("#parentPanel");
+  if (!panel) return;
+  document.querySelectorAll(".parent-tab").forEach((btn) => btn.classList.toggle("active", btn.dataset.parentTab === state.parentTab));
+  if (state.parentTab === "report") {
+    const stats = getStats();
+    const today = getTodayStats(stats);
+    const week = Array.from({ length: 7 }, (_, index) => {
+      const key = todayKey(-6 + index);
+      const day = stats.days[key] || { words: 0, songs: 0, minutes: 0, correct: 0, wrong: 0 };
+      const short = key.slice(5);
+      return `<div class="week-bar"><span>${short}</span><strong style="height:${Math.max(12, Math.min(100, (day.words + day.songs + day.correct) * 8))}%"></strong></div>`;
+    }).join("");
+    panel.innerHTML = `
+      <div class="report-grid">
+        <article><span>Өнөөдөр сурсан үг</span><strong>${today.words || 0}</strong></article>
+        <article><span>Сонссон дуу</span><strong>${today.songs || 0}</strong></article>
+        <article><span>Ашигласан минут</span><strong>${today.minutes || 0}</strong></article>
+        <article><span>Зөв / Буруу</span><strong>${today.correct || 0}/${today.wrong || 0}</strong></article>
+      </div>
+      <div class="week-chart">${week}</div>
+    `;
+    return;
+  }
+  if (state.parentTab === "voice") {
+    const profile = state.parentRole || "mom";
+    const audio = getAudioStore(profile);
+    panel.innerHTML = `
+      <div class="voice-owner">
+        <button class="${profile === "mom" ? "active" : ""}" data-parent-owner="mom" type="button">👩 Ээжийн хоолой</button>
+        <button class="${profile === "dad" ? "active" : ""}" data-parent-owner="dad" type="button">👨 Аавын хоолой</button>
+      </div>
+      <div class="voice-list">
+        ${allVoiceItems().map((item) => `
+          <article class="voice-row">
+            <div><strong>${item.text}</strong><span>${item.group} • ${item.hint}</span></div>
+            <button data-record-text="${item.text}" type="button">🎤 Бичих</button>
+            <button data-play-text="${item.text}" type="button" ${audio[item.text] ? "" : "disabled"}>▶️ Сонсох</button>
+            <button data-delete-text="${item.text}" type="button" ${audio[item.text] ? "" : "disabled"}>🗑️ Устгах</button>
+          </article>
+        `).join("")}
+      </div>
+    `;
+    return;
+  }
+  panel.innerHTML = `
+    <div class="settings-panel">
+      <label>Хүүхдийн сонсох хоолой</label>
+      <div class="settings-voices">
+        <button data-voice-profile="mom" type="button">Ээжийн хоолой</button>
+        <button data-voice-profile="dad" type="button">Аавын хоолой</button>
+        <button data-voice-profile="default" type="button">Default хоолой</button>
+      </div>
+      <p>PIN, аудио, статистик бүгд энэ төхөөрөмж дээр хадгалагдана.</p>
+    </div>
+  `;
+  setVoiceProfile(state.voiceProfile);
+}
+
+async function startRecording(text) {
+  if (!navigator.mediaDevices || !window.MediaRecorder) {
+    alert("Энэ browser дуу бичлэг дэмжихгүй байна.");
+    return;
+  }
+  if (state.recording) {
+    state.recording.stop();
+    return;
+  }
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const recorder = new MediaRecorder(stream);
+  const chunks = [];
+  state.recording = recorder;
+  state.recordTarget = text;
+  recorder.ondataavailable = (event) => chunks.push(event.data);
+  recorder.onstop = () => {
+    const blob = new Blob(chunks, { type: recorder.mimeType || "audio/webm" });
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      saveAudioClip(state.parentRole || "mom", text, reader.result);
+      state.recording = null;
+      state.recordTarget = "";
+      stream.getTracks().forEach((track) => track.stop());
+      renderParentCenter();
+    };
+    reader.readAsDataURL(blob);
+  };
+  recorder.start();
+  setTimeout(() => {
+    if (state.recording === recorder && recorder.state === "recording") recorder.stop();
+  }, 6000);
+}
 
 function imageUrl(query, index = 1) {
   const flag = countryFlagIcon(query);
@@ -2224,6 +2552,7 @@ function audioSlug(text) {
 }
 
 function speak(text, lang = state.lang) {
+  if (playCustomAudio(text)) return;
   if (lang === "mn") {
     const audio = new Audio(`assets/audio/mn/${audioSlug(text)}`);
     audio.play().catch(() => speakWithBrowser(text, lang));
@@ -2256,7 +2585,7 @@ function speakWithBrowser(text, lang = state.lang) {
 
 function playCharacterGreeting(character) {
   playNotes(["C5", "E5"], 0.1);
-  const phrase = state.lang === "mn" ? "???? ??, ????!" : "Hello, Odko!";
+  const phrase = state.lang === "mn" ? "\u0421\u0430\u0439\u043d \u0443\u0443, \u041e\u0434\u043a\u043e!" : "Hello, Odko!";
   if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(phrase);
@@ -2277,6 +2606,7 @@ function celebrate() {
 
 function saveProgress() {
   state.progress += 1;
+  trackStat("words", 1);
   localStorage.setItem("miniiOdProgress", String(state.progress));
   $("#progressText").textContent = state.lang === "mn" ? `${state.progress} үг` : `${state.progress} words`;
 }
@@ -2416,6 +2746,80 @@ function refreshLanguage() {
 }
 
 document.addEventListener("click", (event) => {
+  const roleChoice = event.target.closest("[data-role-choice]");
+  if (roleChoice) {
+    const role = roleChoice.dataset.roleChoice;
+    if (role === "child") {
+      enterApp("child");
+    } else {
+      showPin(role);
+    }
+    return;
+  }
+
+  if (event.target.closest("#pinSubmit")) {
+    submitPin();
+    return;
+  }
+
+  if (event.target.closest("#openParentCenter")) {
+    syncUsageMinutes();
+    $("#parentCenter").hidden = false;
+    renderParentCenter();
+    return;
+  }
+
+  if (event.target.closest("#closeParentCenter")) {
+    $("#parentCenter").hidden = true;
+    return;
+  }
+
+  if (event.target.closest("#switchMode")) {
+    $("#roleGate").hidden = false;
+    $("#pinBox").hidden = true;
+    return;
+  }
+
+  const parentTab = event.target.closest("[data-parent-tab]");
+  if (parentTab) {
+    state.parentTab = parentTab.dataset.parentTab;
+    renderParentCenter();
+    return;
+  }
+
+  const parentOwner = event.target.closest("[data-parent-owner]");
+  if (parentOwner) {
+    state.parentRole = parentOwner.dataset.parentOwner;
+    renderParentCenter();
+    return;
+  }
+
+  const voiceProfile = event.target.closest("[data-voice-profile]");
+  if (voiceProfile) {
+    setVoiceProfile(voiceProfile.dataset.voiceProfile);
+    return;
+  }
+
+  const recordText = event.target.closest("[data-record-text]");
+  if (recordText) {
+    startRecording(recordText.dataset.recordText);
+    return;
+  }
+
+  const playText = event.target.closest("[data-play-text]");
+  if (playText) {
+    const clip = getAudioStore(state.parentRole || "mom")[playText.dataset.playText];
+    if (clip) new Audio(clip.dataUrl).play().catch(() => {});
+    return;
+  }
+
+  const deleteText = event.target.closest("[data-delete-text]");
+  if (deleteText) {
+    deleteAudioClip(state.parentRole || "mom", deleteText.dataset.deleteText);
+    renderParentCenter();
+    return;
+  }
+
   const nav = event.target.closest(".nav-btn");
   if (nav) {
     document.querySelectorAll(".nav-btn").forEach((btn) => btn.classList.toggle("active", btn === nav));
@@ -2445,7 +2849,7 @@ document.addEventListener("click", (event) => {
   const characterCard = event.target.closest("[data-character]");
   if (characterCard) {
     playCharacterGreeting(characterGreetings[Number(characterCard.dataset.character)]);
-    saveProgress();
+    trackStat("songs", 1);
   }
 
   const alphaMode = event.target.closest(".alpha-mode");
@@ -2463,10 +2867,12 @@ document.addEventListener("click", (event) => {
     const correct = choice.dataset.choice === state.gameAnswer[1];
     choice.classList.add(correct ? "correct" : "wrong");
     if (correct) {
+      trackStat("correct", 1);
       celebrate();
       saveProgress();
       setTimeout(newGame, 900);
     } else {
+      trackStat("wrong", 1);
       speak(state.lang === "mn" ? "Дахиад оролдоорой" : "Try again", state.lang);
     }
   }
