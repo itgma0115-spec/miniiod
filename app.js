@@ -1957,12 +1957,14 @@ const enExamples = Object.fromEntries(enLetters.map((letter) => {
   return [letter, map[letter]];
 }));
 
-const songs = [
-  { mn: "Одод анивчина", en: "Twinkle Little Star", type: "public domain", notes: ["C4","C4","G4","G4","A4","A4","G4"] },
-  { mn: "Мэригийн хурга", en: "Mary Had a Little Lamb", type: "public domain", notes: ["E4","D4","C4","D4","E4","E4","E4"] },
-  { mn: "Фрер Жак", en: "Frere Jacques", type: "traditional", notes: ["C4","D4","E4","C4","C4","D4","E4","C4"] },
-  { mn: "Монгол ардын бүүвэй", en: "Mongolian lullaby demo", type: "original demo", notes: ["G4","E4","D4","E4","G4","E4","D4"] },
-  { mn: "YouTube хүүхдийн дуу", en: "YouTube kids song", type: "YouTube", youtubeId: "OO1ihUBf2Ac" },
+const characterGreetings = [
+  { name: "Duggee", role: "Friendly leader", icon: "D", colors: ["#f8d66d", "#8fd4ff"], pitch: 0.95, rate: 0.78 },
+  { name: "Happy", role: "Tiny crocodile", icon: "H", colors: ["#8ee6a8", "#f8d66d"], pitch: 1.18, rate: 0.9 },
+  { name: "Tag", role: "Kind rhino", icon: "T", colors: ["#c7d2fe", "#ffffff"], pitch: 0.86, rate: 0.76 },
+  { name: "Betty", role: "Bright octopus", icon: "B", colors: ["#f0abfc", "#bae6fd"], pitch: 1.22, rate: 0.86 },
+  { name: "Roly", role: "Loud hippo", icon: "R", colors: ["#93c5fd", "#fecaca"], pitch: 0.82, rate: 0.98 },
+  { name: "Norrie", role: "Cheerful mouse", icon: "N", colors: ["#fca5a5", "#fde68a"], pitch: 1.3, rate: 0.88 },
+  { name: "Enid", role: "Calm cat", icon: "E", colors: ["#e5e7eb", "#fef3c7"], pitch: 1.05, rate: 0.72 },
 ];
 
 const $ = (selector) => document.querySelector(selector);
@@ -1972,8 +1974,6 @@ function imageUrl(query, index = 1) {
   const flag = countryFlagIcon(query);
   if (flag) return flag;
 
-  const icons8 = icons8FruitIcon(query);
-  if (icons8) return icons8;
 
   const number = numberImage(query, index);
   if (number) return number;
@@ -1983,6 +1983,9 @@ function imageUrl(query, index = 1) {
 
   const shape = shapeImage(query, index);
   if (shape) return shape;
+
+  const photo = photoImageUrl(query, index);
+  if (photo) return photo;
 
   const emoji = cartoonEmoji(query);
   const palette = [
@@ -2004,6 +2007,19 @@ function imageUrl(query, index = 1) {
       <text x="320" y="458" text-anchor="middle" font-size="34" font-weight="800" fill="#233044" font-family="Arial, sans-serif">${escapeSvg(labelText)}</text>
     </svg>`;
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function photoImageUrl(query, index = 1) {
+  const q = query.toLowerCase();
+  if (q.includes("letter") || q.includes("xray") || q.includes("x mark")) return "";
+  const cleaned = q
+    .replace(/#[0-9a-f]{6}/gi, "")
+    .replace(/\b(fruit|animal|farm|african|vehicle|vegetable|body|part|family|food)\b/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!cleaned || cleaned.length < 2) return "";
+  const keywords = encodeURIComponent(cleaned.replace(/\s+/g, ","));
+  return "https://loremflickr.com/640/520/" + keywords + "?lock=" + index;
 }
 
 function numberImage(query, index = 1) {
@@ -2101,54 +2117,6 @@ function countryFlagIcon(query) {
   ];
   const found = map.find(([name]) => q.includes(name));
   return found ? `https://flagcdn.com/${found[1]}.svg` : "";
-}
-
-function icons8FruitIcon(query) {
-  const q = query.toLowerCase();
-  const base = "https://img.icons8.com/color/240/";
-  const map = [
-    ["red apple", "apple.png"],
-    ["apple", "apple.png"],
-    ["banana", "banana.png"],
-    ["orange", "orange.png"],
-    ["grapes", "grapes.png"],
-    ["grape", "grapes.png"],
-    ["strawberry", "strawberry.png"],
-    ["watermelon", "watermelon.png"],
-    ["pear", "pear.png"],
-    ["peach", "peach.png"],
-    ["cherry", "cherry.png"],
-    ["pineapple", "pineapple.png"],
-    ["mango", "mango.png"],
-    ["kiwi", "kiwi.png"],
-    ["lemon", "lemon.png"],
-    ["pomegranate", "pomegranate.png"],
-    ["plum", "plum.png"],
-    ["guava", "guava.png"],
-    ["avocado", "avocado.png"],
-    ["coconut", "coconut.png"],
-    ["raspberry", "raspberry.png"],
-    ["blueberry", "blueberry.png"],
-    ["melon", "melon.png"],
-    ["apricot", "apricot.png"],
-    ["lime", "lime.png"],
-    ["grapefruit", "grapefruit.png"],
-    ["dragon fruit", "dragon-fruit.png"],
-    ["fig", "fig.png"],
-    ["date", "date-fruit.png"],
-    ["persimmon", "persimmon.png"],
-    ["blackcurrant", "currant.png"],
-    ["redcurrant", "currant.png"],
-    ["lingonberry", "berries.png"],
-    ["buckthorn", "berries.png"],
-    ["bird cherry", "cherry.png"],
-    ["hawthorn", "berries.png"],
-    ["rosehip", "berries.png"],
-    ["berry", "berries.png"],
-    ["fruit", "fruit-bag.png"],
-  ];
-  const found = map.find(([key]) => q.includes(key));
-  return found ? `${base}${found[1]}` : "";
 }
 
 function fallbackImage(index = 1) {
@@ -2252,6 +2220,21 @@ function speakWithBrowser(text, lang = state.lang) {
   window.speechSynthesis.speak(utterance);
 }
 
+function playCharacterGreeting(character) {
+  playNotes(["C5", "E5"], 0.1);
+  const phrase = state.lang === "mn" ? "???? ??, ????!" : "Hello, Odko!";
+  if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(phrase);
+  utterance.lang = state.lang === "mn" ? "mn-MN" : "en-US";
+  utterance.pitch = character.pitch;
+  utterance.rate = character.rate;
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find((voice) => voice.lang.toLowerCase().startsWith(state.lang === "mn" ? "mn" : "en"));
+  if (preferred) utterance.voice = preferred;
+  window.speechSynthesis.speak(utterance);
+}
+
 function celebrate() {
   speak(state.lang === "mn" ? "Мундаг байна, миний од!" : "Great job, my star!", state.lang);
   playNotes(["C5", "E5", "G5", "C6"], 0.14);
@@ -2282,21 +2265,12 @@ function renderWords() {
 }
 
 function renderSongs() {
-  $("#songList").innerHTML = songs.map((song, index) => `
-    <article class="song-card ${song.youtubeId ? "video-song" : ""}">
-      ${song.youtubeId ? `
-        <a class="youtube-link" href="https://www.youtube.com/watch?v=${song.youtubeId}" target="_blank" rel="noopener">
-          <img src="https://img.youtube.com/vi/${song.youtubeId}/hqdefault.jpg" alt="${state.lang === "mn" ? song.mn : song.en}" />
-          <span>▶</span>
-        </a>
-      ` : ""}
-      <div>
-        <strong>${state.lang === "mn" ? song.mn : song.en}</strong>
-        <small>${song.type}</small>
-      </div>
-      ${song.youtubeId ? "" : `<button class="play-dot" data-song="${index}" type="button" aria-label="Play song">▶</button>`}
-    </article>
-  `).join("");
+  $("#songList").innerHTML = characterGreetings.map((character, index) =>     '<button class="song-card character-card" data-character="' + index + '" type="button" style="--character-a:' + character.colors[0] + ';--character-b:' + character.colors[1] + ';">' +
+      '<span class="character-avatar" aria-hidden="true">' + character.icon + '</span>' +
+      '<span><strong>' + character.name + '</strong><small>' + character.role + '</small></span>' +
+      '<span class="play-dot" aria-label="Play greeting">?</span>' +
+    '</button>'
+  ).join("");
 }
 
 function noteFrequency(note) {
@@ -2434,9 +2408,10 @@ document.addEventListener("click", (event) => {
     saveProgress();
   }
 
-  const song = event.target.closest("[data-song]");
-  if (song) {
-    playNotes(songs[Number(song.dataset.song)].notes);
+  const characterCard = event.target.closest("[data-character]");
+  if (characterCard) {
+    playCharacterGreeting(characterGreetings[Number(characterCard.dataset.character)]);
+    saveProgress();
   }
 
   const alphaMode = event.target.closest(".alpha-mode");

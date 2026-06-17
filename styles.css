@@ -227,7 +227,24 @@ h1 {
 }
 
 .pill-row {
+  position: sticky;
+  top: 0;
+  z-index: 4;
   overflow-x: auto;
+  margin: 0 -16px 10px;
+  padding: 10px 16px 8px;
+  background: rgba(255, 250, 240, 0.96);
+  border-bottom: 1px solid rgba(235, 227, 211, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.pill-row::-webkit-scrollbar {
+  display: none;
+}
+
+.alphabet-mode {
   padding-bottom: 8px;
 }
 
@@ -293,43 +310,43 @@ h1 {
   padding: 14px;
 }
 
-.song-card.video-song {
+.character-card {
   display: grid;
+  grid-template-columns: 86px 1fr 52px;
   gap: 12px;
+  align-items: center;
+  text-align: left;
+  min-height: 112px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.85), transparent 34%),
+    linear-gradient(135deg, var(--character-a, #fff3b0), var(--character-b, #e6f5ff));
 }
 
-.youtube-link {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 8px;
-  background: #111827;
-}
-
-.youtube-link img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-.youtube-link span {
-  position: absolute;
-  left: 50%;
-  top: 50%;
+.character-avatar {
   display: grid;
   place-items: center;
-  width: 64px;
-  height: 64px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: rgba(239, 111, 123, 0.94);
-  color: #fff;
-  font-size: 28px;
-  font-weight: 900;
-  box-shadow: 0 10px 24px rgba(35, 48, 68, 0.28);
+  width: 78px;
+  height: 78px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 -8px 0 rgba(35, 48, 68, 0.06);
+  font-size: 42px;
+}
+
+.character-card strong {
+  font-size: 20px;
+}
+
+.character-card small {
+  display: block;
+  margin-top: 4px;
+  color: #31405a;
+  font-weight: 800;
+}
+
+.character-card .play-dot {
+  background: rgba(35, 48, 68, 0.9);
 }
 
 .song-card strong {
@@ -457,17 +474,6 @@ h1 {
   background: #e9eef5;
 }
 
-.asset-credit {
-  margin: 18px 0 0;
-  text-align: center;
-  font-size: 12px;
-}
-
-.asset-credit a {
-  color: var(--muted);
-  text-decoration: none;
-}
-
 .bottom-nav {
   position: fixed;
   left: 50%;
@@ -545,10 +551,6 @@ h1 {
 
   .song-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .song-card.video-song {
-    grid-column: span 2;
   }
 
   .choice-grid {
